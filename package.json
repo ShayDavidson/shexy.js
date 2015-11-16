@@ -1,0 +1,26 @@
+{
+  "name": "shexy",
+  "description": "Everything related to Hexagon in one awesome JS library.",
+  "keywords": ["hex", "hexagon", "board"],
+  "homepage": "https://github.com/ShayDavidson/shexy.js",
+  "author": {
+      "name": "Shay Davidson",
+      "email": "shay.h.davidson@gmail.com",
+      "url": "https://github.com/ShayDavidson"
+  },
+  "version": "0.0.1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ShayDavidson/shexy.js"
+  },
+  "bugs": {
+    "url": "https://github.com/ShayDavidson/shexy.js/issues"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "istanbul": "^0.4.0",
+    "mocha": "^2.3.4",
+    "webpack": "^1.12.6"
+  }
+}

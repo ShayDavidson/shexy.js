@@ -1,3 +1,3 @@
 # shexy.js
 
-Everything related to Hexagon in one awesome JS library.
+Everything related to Hexagons in one awesome JS library.
