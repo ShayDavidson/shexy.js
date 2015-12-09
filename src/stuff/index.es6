@@ -1,3 +1,3 @@
 export default {
-    Test: 'body'
+    Test: 'stuff'
 };

@@ -53,17 +53,22 @@ var Shexy =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
-	var _curvesIndexEs6 = __webpack_require__(2);
+	var _curvesIndexEs6 = __webpack_require__(1);
 	
 	var _curvesIndexEs62 = _interopRequireDefault(_curvesIndexEs6);
 	
-	var _bodyIndexEs6 = __webpack_require__(1);
+	var _bodyIndexEs6 = __webpack_require__(2);
 	
 	var _bodyIndexEs62 = _interopRequireDefault(_bodyIndexEs6);
 	
+	var _stuffIndexEs6 = __webpack_require__(3);
+	
+	var _stuffIndexEs62 = _interopRequireDefault(_stuffIndexEs6);
+	
 	exports["default"] = {
+	    Body: _bodyIndexEs62["default"],
 	    Curves: _curvesIndexEs62["default"],
-	    Body: _bodyIndexEs62["default"]
+	    Stuff: _stuffIndexEs62["default"]
 	};
 	module.exports = exports["default"];
 
@@ -71,25 +76,43 @@ var Shexy =
 /* 1 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
 	});
-	exports["default"] = {};
-	module.exports = exports["default"];
+	exports['default'] = {
+	    Test: 'curves'
+	};
+	module.exports = exports['default'];
 
 /***/ },
 /* 2 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
 	});
-	exports["default"] = {};
-	module.exports = exports["default"];
+	exports['default'] = {
+	    Test: 'body'
+	};
+	module.exports = exports['default'];
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	exports['default'] = {
+	    Test: 'stuff'
+	};
+	module.exports = exports['default'];
 
 /***/ }
 /******/ ]);
