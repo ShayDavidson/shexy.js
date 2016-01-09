@@ -1,3 +1,4 @@
 export default {
-    Test: 'body'
-};
+    Board: require('board'),
+    Hex: require('hex')
+}
