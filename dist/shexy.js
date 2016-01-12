@@ -156,8 +156,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    return Point;
 	})();
-
-	exports.Point = Point;
+	
+	exports["default"] = Point;
+	module.exports = exports["default"];
 
 /***/ },
 /* 3 */
@@ -208,8 +209,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    return HexDesigner;
 	})();
-
-	exports.HexDesigner = HexDesigner;
+	
+	exports['default'] = HexDesigner;
+	module.exports = exports['default'];
 
 /***/ },
 /* 4 */
@@ -226,8 +228,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var BoardDesinger = function BoardDesinger() {
 	  _classCallCheck(this, BoardDesinger);
 	};
-
-	exports.BoardDesinger = BoardDesinger;
+	
+	exports["default"] = BoardDesinger;
+	module.exports = exports["default"];
 
 /***/ },
 /* 5 */

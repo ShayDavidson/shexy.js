@@ -9,7 +9,7 @@ const NORMALIZED_HEX_COORDINATES = [
     new Point(-1, 0)
 ]
 
-export class HexDesigner {
+export default class HexDesigner {
 
     static getPoints(options = {}) {
         options = Object.assign({
