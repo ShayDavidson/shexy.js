@@ -1,4 +1,7 @@
+import Board from 'board'
+import Hex from 'hex'
+
 export default {
-    Board: require('board'),
-    Hex: require('hex')
+    Board: Board,
+    Hex: Hex
 }
