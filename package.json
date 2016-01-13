@@ -12,7 +12,7 @@
     "email": "shay.h.davidson@gmail.com",
     "url": "https://github.com/ShayDavidson"
   },
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "main": "./dist/shexy.js",
   "repository": {

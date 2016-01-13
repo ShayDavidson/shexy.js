@@ -1,6 +1,6 @@
-import Direction from 'direction'
+import Direction from 'utils/direction'
 
-export default class Hex {
+export default class HexModel {
 
     constructor(row, col) {
         this.row = row

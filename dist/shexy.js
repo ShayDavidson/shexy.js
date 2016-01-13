@@ -59,20 +59,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, '__esModule', {
 	    value: true
 	});
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _curvesIndex = __webpack_require__(1);
-	
-	var _curvesIndex2 = _interopRequireDefault(_curvesIndex);
-	
-	var _bodyIndex = __webpack_require__(5);
-	
-	var _bodyIndex2 = _interopRequireDefault(_bodyIndex);
-	
 	exports['default'] = {
-	    Body: _bodyIndex2['default'],
-	    Curves: _curvesIndex2['default']
+	    // Designers
+	    BoardDesigner: __webpack_require__(1),
+	    // Models
+	    BoardModel: __webpack_require__(3),
+	    HexModel: __webpack_require__(4),
+	    // Utils
+	    Direction: __webpack_require__(5),
+	    Vector: __webpack_require__(2)
 	};
 	module.exports = exports['default'];
 
@@ -88,22 +83,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _point = __webpack_require__(2);
+	var _utilsVector = __webpack_require__(2);
 	
-	var _point2 = _interopRequireDefault(_point);
+	var _utilsVector2 = _interopRequireDefault(_utilsVector);
 	
-	var _hex_designer = __webpack_require__(3);
-	
-	var _hex_designer2 = _interopRequireDefault(_hex_designer);
-	
-	var _board_designer = __webpack_require__(4);
-	
-	var _board_designer2 = _interopRequireDefault(_board_designer);
+	var NORMALIZED_HEX_COORDINATES = [new _utilsVector2['default'](-0.5, -0.866), new _utilsVector2['default'](0.5, -0.866), new _utilsVector2['default'](1, 0), new _utilsVector2['default'](0.5, 0.866), new _utilsVector2['default'](-0.5, 0.866), new _utilsVector2['default'](-1, 0)];
 	
 	exports['default'] = {
-	    Point: _point2['default'],
-	    HexDesigner: _hex_designer2['default'],
-	    BoardDesigners: _board_designer2['default']
+	
+	    getHexVertices: function getHexVertices() {
+	        var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	        options = Object.assign({
+	            centerX: 0,
+	            centerY: 0,
+	            scaleX: 1,
+	            scaleY: 1,
+	            radius: 1
+	        }, options);
+	
+	        var center = new _utilsVector2['default'](options.centerX, options.centerY);
+	        return NORMALIZED_HEX_COORDINATES.map(function (vector) {
+	            vector.add(center).multiply(options.radius).multiplyX(options.scaleX).multiplyY(options.scaleY);
+	        });
+	    }
 	};
 	module.exports = exports['default'];
 
@@ -121,43 +124,43 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var Point = (function () {
-	    function Point() {
+	var Vector = (function () {
+	    function Vector() {
 	        var x = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
 	        var y = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
 	
-	        _classCallCheck(this, Point);
+	        _classCallCheck(this, Vector);
 	
 	        this.x = x;
 	        this.y = y;
 	    }
 	
-	    _createClass(Point, [{
+	    _createClass(Vector, [{
 	        key: "add",
-	        value: function add(point) {
-	            return new Point(this.x + point.x, this.y + point.y);
+	        value: function add(vector) {
+	            return new Vector(this.x + vector.x, this.y + vector.y);
 	        }
 	    }, {
 	        key: "multiply",
 	        value: function multiply(val) {
-	            return new Point(this.x * val, this.y * val);
+	            return new Vector(this.x * val, this.y * val);
 	        }
 	    }, {
 	        key: "multiplyX",
 	        value: function multiplyX(val) {
-	            return new Point(this.x * val, this.y);
+	            return new Vector(this.x * val, this.y);
 	        }
 	    }, {
 	        key: "multiplyY",
 	        value: function multiplyY(val) {
-	            return new Point(this.x, this.y * val);
+	            return new Vector(this.x, this.y * val);
 	        }
 	    }]);
 	
-	    return Point;
+	    return Vector;
 	})();
 	
-	exports["default"] = Point;
+	exports["default"] = Vector;
 	module.exports = exports["default"];
 
 /***/ },
@@ -176,117 +179,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _point = __webpack_require__(2);
+	var _modelsHex_model = __webpack_require__(4);
 	
-	var _point2 = _interopRequireDefault(_point);
+	var _modelsHex_model2 = _interopRequireDefault(_modelsHex_model);
 	
-	var NORMALIZED_HEX_COORDINATES = [new _point2['default'](-0.5, -0.866), new _point2['default'](0.5, -0.866), new _point2['default'](1, 0), new _point2['default'](0.5, 0.866), new _point2['default'](-0.5, 0.866), new _point2['default'](-1, 0)];
+	var _utilsDirection = __webpack_require__(5);
 	
-	var HexDesigner = (function () {
-	    function HexDesigner() {
-	        _classCallCheck(this, HexDesigner);
-	    }
-	
-	    _createClass(HexDesigner, null, [{
-	        key: 'getPoints',
-	        value: function getPoints() {
-	            var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	            options = Object.assign({
-	                centerX: 0,
-	                centerY: 0,
-	                scaleX: 1,
-	                scaleY: 1,
-	                radius: 1
-	            }, options);
-	
-	            var center = new _point2['default'](options.centerX, options.centerY);
-	            return NORMALIZED_HEX_COORDINATES.map(function (point) {
-	                point.add(center).multiply(options.radius).multiplyX(options.scaleX).multiplyY(options.scaleY);
-	            });
-	        }
-	    }]);
-	
-	    return HexDesigner;
-	})();
-	
-	exports['default'] = HexDesigner;
-	module.exports = exports['default'];
-
-/***/ },
-/* 4 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var BoardDesinger = function BoardDesinger() {
-	  _classCallCheck(this, BoardDesinger);
-	};
-	
-	exports["default"] = BoardDesinger;
-	module.exports = exports["default"];
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	    value: true
-	});
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	var _board = __webpack_require__(6);
-	
-	var _board2 = _interopRequireDefault(_board);
-	
-	var _hex = __webpack_require__(7);
-	
-	var _hex2 = _interopRequireDefault(_hex);
-	
-	exports['default'] = {
-	    Board: _board2['default'],
-	    Hex: _hex2['default']
-	};
-	module.exports = exports['default'];
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	    value: true
-	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	var _hex = __webpack_require__(7);
-	
-	var _hex2 = _interopRequireDefault(_hex);
-	
-	var _direction = __webpack_require__(8);
-	
-	var _direction2 = _interopRequireDefault(_direction);
+	var _utilsDirection2 = _interopRequireDefault(_utilsDirection);
 	
 	/**
 	* @Class Board
 	*/
 	
-	var Board = (function () {
+	var BoardModel = (function () {
 	
 	    /**
 	    * @constructs Board
@@ -296,17 +201,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * @returns {Board} New Board object
 	    */
 	
-	    function Board() {
+	    function BoardModel() {
 	        var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	        _classCallCheck(this, Board);
+	        _classCallCheck(this, BoardModel);
 	
 	        this.options = options;
 	        this._constructHexMatrix();
 	        this._connectHexMatrix();
 	    }
 	
-	    _createClass(Board, [{
+	    _createClass(BoardModel, [{
 	        key: 'get',
 	        value: function get(row, col) {
 	            if (this._hexMatrix[row]) {
@@ -329,7 +234,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            this._hexMatrix = new Array(this.options.rows).fill(new Array(this.options.cols).fill(0));
 	            this.each(function (row, col) {
-	                _this._hexMatrix[row][col] = new _hex2['default'](row, col);
+	                _this._hexMatrix[row][col] = new _modelsHex_model2['default'](row, col);
 	            });
 	        }
 	    }, {
@@ -339,21 +244,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            this.each(function (row, col, hex) {
 	                var oddColDiff = col % 2 === 0 ? 1 : 0;
-	                hex.connectAdajacent(_this2.get(row + 1, col), _direction2['default'].BOT);
-	                hex.connectAdajacent(_this2.get(row + oddColDiff, col + 1), _direction2['default'].BOT_RIGHT);
-	                hex.connectAdajacent(_this2.get(row - 1 + oddColDiff, col + 1), _direction2['default'].TOP_RIGHT);
+	                hex.connectAdajacent(_this2.get(row + 1, col), _utilsDirection2['default'].BOT);
+	                hex.connectAdajacent(_this2.get(row + oddColDiff, col + 1), _utilsDirection2['default'].BOT_RIGHT);
+	                hex.connectAdajacent(_this2.get(row - 1 + oddColDiff, col + 1), _utilsDirection2['default'].TOP_RIGHT);
 	            });
 	        }
 	    }]);
 	
-	    return Board;
+	    return BoardModel;
 	})();
 	
-	exports['default'] = Board;
+	exports['default'] = BoardModel;
 	module.exports = exports['default'];
 
 /***/ },
-/* 7 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -368,37 +273,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _direction = __webpack_require__(8);
+	var _utilsDirection = __webpack_require__(5);
 	
-	var _direction2 = _interopRequireDefault(_direction);
+	var _utilsDirection2 = _interopRequireDefault(_utilsDirection);
 	
-	var Hex = (function () {
-	    function Hex(row, col) {
-	        _classCallCheck(this, Hex);
+	var HexModel = (function () {
+	    function HexModel(row, col) {
+	        _classCallCheck(this, HexModel);
 	
 	        this.row = row;
 	        this.col = col;
 	        this._adjacents = {};
 	    }
 	
-	    _createClass(Hex, [{
+	    _createClass(HexModel, [{
 	        key: 'connectAdajacent',
 	        value: function connectAdajacent(hex, dir) {
 	            if (hex && !this._adjacents[dir]) {
 	                this._adjacents[dir] = hex;
-	                hex.connectAdajacent(this, _direction2['default'].getOpposite(dir));
+	                hex.connectAdajacent(this, _utilsDirection2['default'].getOpposite(dir));
 	            }
 	        }
 	    }]);
 	
-	    return Hex;
+	    return HexModel;
 	})();
 	
-	exports['default'] = Hex;
+	exports['default'] = HexModel;
 	module.exports = exports['default'];
 
 /***/ },
-/* 8 */
+/* 5 */
 /***/ function(module, exports) {
 
 	"use strict";

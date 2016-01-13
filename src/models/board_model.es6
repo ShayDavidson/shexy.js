@@ -1,10 +1,10 @@
-import Hex from 'hex'
-import Direction from 'direction'
+import Hex from 'models/hex_model'
+import Direction from 'utils/direction'
 
 /**
 * @Class Board
 */
-export default class Board {
+export default class BoardModel {
 
     /**
     * @constructs Board
