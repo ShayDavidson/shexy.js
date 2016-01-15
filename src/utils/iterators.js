@@ -40,7 +40,7 @@ export default {
     */
     colRowMapIterator: (cols, rows, mapFunction) => {
         let matrix = new Array(cols).fill(new Array(rows))
-        this.colRowIterator(cols, rows, (col, row) => {
+        module.exports.colRowIterator(cols, rows, (col, row) => {
             matrix[col][row] = mapFunction(col, row)
         })
         return matrix
