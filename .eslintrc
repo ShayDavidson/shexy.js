@@ -18,8 +18,12 @@
   },
   "env": {
     "browser": true,
-    "jasmine": true,
+    "mocha": true,
     "node": true
+  },
+  "globals": {
+      "should": true,
+      "sinon": true
   },
   "rules": {
     "brace-style": 2,

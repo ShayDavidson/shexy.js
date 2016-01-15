@@ -23,7 +23,7 @@
   },
   "main": "./dist/shexy.js",
   "scripts": {
-    "test": "eslint src/**/*.js --cache && mocha --compilers js:babel-core/register test/**/*.js",
+    "test": "eslint src/**/*.js test/**/*.js --cache --max-warnings 0 && NODE_PATH=./src mocha --compilers js:babel-core/register  --require test/init.js test/**/*.js",
     "prepublish": "npm test"
   },
   "pre-push": "test",
