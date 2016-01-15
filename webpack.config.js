@@ -17,7 +17,7 @@ module.exports = {
     module: {
         loaders: [{
             loader: 'babel-loader',
-            test: /\.es6$/
+            test: /\.js$/
         }]
     },
     plugins: [
@@ -32,7 +32,7 @@ module.exports = {
     },
     resolve: {
         modulesDirectories: ['.', 'src', 'node_modules'],
-        extensions: ['', '.es6']
+        extensions: ['', '.js']
     },
     devtool: 'source-map'
 }
