@@ -60,11 +60,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 	exports['default'] = {
-	    // Designers
-	    BoardDesigner: __webpack_require__(1),
+	    // Drawing
+	    Designer: __webpack_require__(1),
 	    // Models
-	    BoardModel: __webpack_require__(3),
-	    HexModel: __webpack_require__(4),
+	    BoardModel: __webpack_require__(7),
+	    HexModel: __webpack_require__(8),
 	    // Utils
 	    Direction: __webpack_require__(5),
 	    Vector: __webpack_require__(2)
@@ -87,6 +87,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _utilsVector2 = _interopRequireDefault(_utilsVector);
 	
+	var _utilsIterators = __webpack_require__(6);
+	
+	var DEFAULTS = {
+	    padding: 0,
+	    radius: 20,
+	    scale: 1
+	};
 	var NORMALIZED_HEX_COORDINATES = [new _utilsVector2['default'](-0.5, -0.866), new _utilsVector2['default'](0.5, -0.866), new _utilsVector2['default'](1, 0), new _utilsVector2['default'](0.5, 0.866), new _utilsVector2['default'](-0.5, 0.866), new _utilsVector2['default'](-1, 0)];
 	
 	exports['default'] = {
@@ -95,16 +102,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
 	        options = Object.assign({
-	            centerX: 0,
-	            centerY: 0,
-	            scaleX: 1,
-	            scaleY: 1,
-	            radius: 1
+	            radius: DEFAULTS.radius,
+	            scaleX: DEFAULTS.scale,
+	            scaleY: DEFAULTS.scale
 	        }, options);
 	
-	        var center = new _utilsVector2['default'](options.centerX, options.centerY);
 	        return NORMALIZED_HEX_COORDINATES.map(function (vector) {
-	            vector.add(center).multiply(options.radius).multiplyX(options.scaleX).multiplyY(options.scaleY);
+	            return vector.multiplyXY(options.radius * options.scaleX, options.radius * options.scaleY);
+	        });
+	    },
+	
+	    getBoardHexCenters: function getBoardHexCenters(rows, cols) {
+	        var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	
+	        options = Object.assign({
+	            padding: DEFAULTS.padding,
+	            hex: {
+	                radius: DEFAULTS.radius,
+	                scaleX: DEFAULTS.scale,
+	                scaleY: DEFAULTS.scale
+	            }
+	        }, options);
+	
+	        (0, _utilsIterators.colRowIterator)(rows, cols, function (row, col) {
+	            console.log(row, col);
 	        });
 	    }
 	};
@@ -136,24 +157,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	
 	    _createClass(Vector, [{
-	        key: "add",
-	        value: function add(vector) {
-	            return new Vector(this.x + vector.x, this.y + vector.y);
-	        }
-	    }, {
-	        key: "multiply",
-	        value: function multiply(val) {
-	            return new Vector(this.x * val, this.y * val);
-	        }
-	    }, {
-	        key: "multiplyX",
-	        value: function multiplyX(val) {
-	            return new Vector(this.x * val, this.y);
-	        }
-	    }, {
-	        key: "multiplyY",
-	        value: function multiplyY(val) {
-	            return new Vector(this.x, this.y * val);
+	        key: "multiplyXY",
+	        value: function multiplyXY(xMultiplier, yMultiplier) {
+	            return new Vector(this.x * xMultiplier, this.y * yMultiplier);
 	        }
 	    }]);
 	
@@ -164,145 +170,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports["default"];
 
 /***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	    value: true
-	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	var _modelsHex_model = __webpack_require__(4);
-	
-	var _modelsHex_model2 = _interopRequireDefault(_modelsHex_model);
-	
-	var _utilsDirection = __webpack_require__(5);
-	
-	var _utilsDirection2 = _interopRequireDefault(_utilsDirection);
-	
-	/**
-	* @Class Board
-	*/
-	
-	var BoardModel = (function () {
-	
-	    /**
-	    * @constructs Board
-	    * @param {Object} options Options object
-	    * @param {Integer} options.rows Number of rows in the board
-	    * @param {Integer} options.cols Number of columns in the board
-	    * @returns {Board} New Board object
-	    */
-	
-	    function BoardModel() {
-	        var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	        _classCallCheck(this, BoardModel);
-	
-	        this.options = options;
-	        this._constructHexMatrix();
-	        this._connectHexMatrix();
-	    }
-	
-	    _createClass(BoardModel, [{
-	        key: 'get',
-	        value: function get(row, col) {
-	            if (this._hexMatrix[row]) {
-	                return this._hexMatrix[row][col];
-	            }
-	        }
-	    }, {
-	        key: 'each',
-	        value: function each(func) {
-	            for (var rowIndex = 0; rowIndex < this.options.rows; rowIndex++) {
-	                for (var colIndex = 0; colIndex < this.options.cols; colIndex++) {
-	                    func.call(this, rowIndex, colIndex, this._hexMatrix[rowIndex][colIndex]);
-	                }
-	            }
-	        }
-	    }, {
-	        key: '_constructHexMatrix',
-	        value: function _constructHexMatrix() {
-	            var _this = this;
-	
-	            this._hexMatrix = new Array(this.options.rows).fill(new Array(this.options.cols).fill(0));
-	            this.each(function (row, col) {
-	                _this._hexMatrix[row][col] = new _modelsHex_model2['default'](row, col);
-	            });
-	        }
-	    }, {
-	        key: '_connectHexMatrix',
-	        value: function _connectHexMatrix() {
-	            var _this2 = this;
-	
-	            this.each(function (row, col, hex) {
-	                var oddColDiff = col % 2 === 0 ? 1 : 0;
-	                hex.connectAdajacent(_this2.get(row + 1, col), _utilsDirection2['default'].BOT);
-	                hex.connectAdajacent(_this2.get(row + oddColDiff, col + 1), _utilsDirection2['default'].BOT_RIGHT);
-	                hex.connectAdajacent(_this2.get(row - 1 + oddColDiff, col + 1), _utilsDirection2['default'].TOP_RIGHT);
-	            });
-	        }
-	    }]);
-	
-	    return BoardModel;
-	})();
-	
-	exports['default'] = BoardModel;
-	module.exports = exports['default'];
-
-/***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, '__esModule', {
-	    value: true
-	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	var _utilsDirection = __webpack_require__(5);
-	
-	var _utilsDirection2 = _interopRequireDefault(_utilsDirection);
-	
-	var HexModel = (function () {
-	    function HexModel(row, col) {
-	        _classCallCheck(this, HexModel);
-	
-	        this.row = row;
-	        this.col = col;
-	        this._adjacents = {};
-	    }
-	
-	    _createClass(HexModel, [{
-	        key: 'connectAdajacent',
-	        value: function connectAdajacent(hex, dir) {
-	            if (hex && !this._adjacents[dir]) {
-	                this._adjacents[dir] = hex;
-	                hex.connectAdajacent(this, _utilsDirection2['default'].getOpposite(dir));
-	            }
-	        }
-	    }]);
-	
-	    return HexModel;
-	})();
-	
-	exports['default'] = HexModel;
-	module.exports = exports['default'];
-
-/***/ },
+/* 3 */,
+/* 4 */,
 /* 5 */
 /***/ function(module, exports) {
 
@@ -324,6 +193,205 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	};
 	module.exports = exports["default"];
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	/**
+	* @callback rowColHandler
+	* @param {Integer} col The current column in the iteration step.
+	* @param {Integer} row The current row in the iteration step.
+	* @returns {undefined} Handler can return a value, but it'll not be used.
+	*/
+	
+	/**
+	* @callback rowColMapFunction
+	* @param {Integer} col The current column in the iteration step.
+	* @param {Integer} row The current row in the iteration step.
+	* @returns {*} Mapped value.
+	*/
+	
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports["default"] = {
+	
+	    /**
+	    * Given a number of columns and rows, this iterator goes over each
+	    * column-row pair and sends then as arguments to the `handler` argument.
+	    * @param {Integer} cols Number of columns to iterate over.
+	    * @param {Integer} rows Number of rows to iterate over.
+	    * @param {rowColHandler} handler A handler for each step of the iteration.
+	    * @returns {undefined}
+	    */
+	    colRowIterator: function colRowIterator(cols, rows, handler) {
+	        for (var colIndex = 0; colIndex < cols; colIndex++) {
+	            for (var rowIndex = 0; rowIndex < rows; rowIndex++) {
+	                handler(colIndex, rowIndex);
+	            }
+	        }
+	    },
+	
+	    /**
+	    * Given a number of columns and rows, this iterator goes over each
+	    * column-row pair and sends then as arguments to the `handler` argument.
+	    * @param {Integer} cols Number of columns to iterate over.
+	    * @param {Integer} rows Number of rows to iterate over.
+	    * @param {rowColMapFunction} mapFunction A map function that returns the mapped value.
+	    * @returns {Array<Array[]>} The mapping result.
+	    */
+	    colRowMapIterator: function colRowMapIterator(cols, rows, mapFunction) {
+	        var matrix = new Array(cols).fill(new Array(rows));
+	        undefined.colRowIterator(cols, rows, function (col, row) {
+	            matrix[col][row] = mapFunction(col, row);
+	        });
+	        return matrix;
+	    }
+	};
+	module.exports = exports["default"];
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var _modelsHex = __webpack_require__(8);
+	
+	var _modelsHex2 = _interopRequireDefault(_modelsHex);
+	
+	var _utilsDirection = __webpack_require__(5);
+	
+	var _utilsDirection2 = _interopRequireDefault(_utilsDirection);
+	
+	var _utilsIterators = __webpack_require__(6);
+	
+	/**
+	* @Class Board
+	*/
+	
+	var Board = (function () {
+	
+	    /**
+	    * @constructs Board
+	    * @param {Object} options Options object
+	    * @param {Integer} options.rows Number of rows in the board
+	    * @param {Integer} options.cols Number of columns in the board
+	    * @returns {Board} New Board object
+	    */
+	
+	    function Board() {
+	        var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	        _classCallCheck(this, Board);
+	
+	        this.options = options;
+	        this.cols = options.cols;
+	        this.rows = options.rows;
+	        this._constructHexMatrix();
+	        this._connectHexMatrix();
+	    }
+	
+	    _createClass(Board, [{
+	        key: 'get',
+	        value: function get(col, row) {
+	            if (this._hexMatrix[col]) {
+	                return this._hexMatrix[col][row];
+	            }
+	        }
+	    }, {
+	        key: 'each',
+	        value: function each(func) {
+	            var _this = this;
+	
+	            (0, _utilsIterators.colRowIterator)(this.cols, this.rows, function (col, row) {
+	                func.call(_this, col, row, _this.get(col, row));
+	            });
+	        }
+	    }, {
+	        key: '_constructHexMatrix',
+	        value: function _constructHexMatrix() {
+	            this._hexMatrix = (0, _utilsIterators.colRowMapIterator)(this.cols, this.rows, function (col, row) {
+	                return new _modelsHex2['default'](col, row);
+	            });
+	        }
+	    }, {
+	        key: '_connectHexMatrix',
+	        value: function _connectHexMatrix() {
+	            var _this2 = this;
+	
+	            this.each(function (row, col, hex) {
+	                var oddColDiff = col % 2 === 0 ? 1 : 0;
+	                hex.connectAdajacent(_this2.get(row + 1, col), _utilsDirection2['default'].BOT);
+	                hex.connectAdajacent(_this2.get(row + oddColDiff, col + 1), _utilsDirection2['default'].BOT_RIGHT);
+	                hex.connectAdajacent(_this2.get(row - 1 + oddColDiff, col + 1), _utilsDirection2['default'].TOP_RIGHT);
+	            });
+	        }
+	    }]);
+	
+	    return Board;
+	})();
+	
+	exports['default'] = Board;
+	module.exports = exports['default'];
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var _utilsDirection = __webpack_require__(5);
+	
+	var _utilsDirection2 = _interopRequireDefault(_utilsDirection);
+	
+	var Hex = (function () {
+	    function Hex(row, col) {
+	        _classCallCheck(this, Hex);
+	
+	        this.row = row;
+	        this.col = col;
+	        this._adjacents = {};
+	    }
+	
+	    _createClass(Hex, [{
+	        key: 'connectAdajacent',
+	        value: function connectAdajacent(hex, dir) {
+	            if (hex && !this._adjacents[dir]) {
+	                this._adjacents[dir] = hex;
+	                hex.connectAdajacent(this, _utilsDirection2['default'].getOpposite(dir));
+	            }
+	        }
+	    }]);
+	
+	    return Hex;
+	})();
+	
+	exports['default'] = Hex;
+	module.exports = exports['default'];
 
 /***/ }
 /******/ ])

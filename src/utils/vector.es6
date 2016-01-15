@@ -4,19 +4,7 @@ export default class Vector {
         this.y = y
     }
 
-    add(vector) {
-        return new Vector(this.x + vector.x, this.y + vector.y)
-    }
-
-    multiply(val) {
-        return new Vector(this.x * val, this.y * val)
-    }
-
-    multiplyX(val) {
-        return new Vector(this.x * val, this.y)
-    }
-
-    multiplyY(val) {
-        return new Vector(this.x, this.y  * val)
+    multiplyXY(xMultiplier, yMultiplier) {
+        return new Vector(this.x * xMultiplier, this.y * yMultiplier)
     }
 }

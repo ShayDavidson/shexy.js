@@ -1,9 +1,9 @@
 export default {
-    // Designers
-    HexDesigner: require('designers/hex_designer'),
+    // Drawing
+    Designer: require('drawing/designer'),
     // Models
-    BoardModel: require('models/board_model'),
-    HexModel: require('models/hex_model'),
+    BoardModel: require('models/board'),
+    HexModel: require('models/hex'),
     // Utils
     Direction: require('utils/direction'),
     Vector: require('utils/vector')

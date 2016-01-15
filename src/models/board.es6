@@ -1,10 +1,11 @@
-import Hex from 'models/hex_model'
+import Hex from 'models/hex'
 import Direction from 'utils/direction'
+import { colRowIterator, colRowMapIterator } from 'utils/iterators'
 
 /**
 * @Class Board
 */
-export default class BoardModel {
+export default class Board {
 
     /**
     * @constructs Board
@@ -15,28 +16,27 @@ export default class BoardModel {
     */
     constructor(options = {}) {
         this.options = options
+        this.cols = options.cols
+        this.rows = options.rows
         this._constructHexMatrix()
         this._connectHexMatrix()
     }
 
-    get(row, col) {
-        if (this._hexMatrix[row]) {
-            return this._hexMatrix[row][col]
+    get(col, row) {
+        if (this._hexMatrix[col]) {
+            return this._hexMatrix[col][row]
         }
     }
 
     each(func) {
-        for (let rowIndex = 0; rowIndex < this.options.rows; rowIndex++) {
-            for (let colIndex = 0; colIndex < this.options.cols; colIndex++) {
-                func.call(this, rowIndex, colIndex, this._hexMatrix[rowIndex][colIndex])
-            }
-        }
+        colRowIterator(this.cols, this.rows, (col, row) => {
+            func.call(this, col, row, this.get(col, row))
+        })
     }
 
     _constructHexMatrix() {
-        this._hexMatrix = new Array(this.options.rows).fill(new Array(this.options.cols).fill(0))
-        this.each((row, col) => {
-            this._hexMatrix[row][col] = new Hex(row, col)
+        this._hexMatrix = colRowMapIterator(this.cols, this.rows, (col, row) => {
+            return new Hex(col, row)
         })
     }
 
