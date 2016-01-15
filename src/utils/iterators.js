@@ -23,9 +23,9 @@ export default {
     * @returns {undefined}
     */
     colRowIterator: (cols, rows, handler) => {
-        for (let colIndex = 0; colIndex < cols; colIndex++) {
-            for (let rowIndex = 0; rowIndex < rows; rowIndex++) {
-                handler(colIndex, rowIndex)
+        for (let col = 0; col < cols; col++) {
+            for (let row = 0; row < rows; row++) {
+                handler(col, row)
             }
         }
     },
@@ -39,7 +39,7 @@ export default {
     * @returns {Array<Array[]>} The mapping result.
     */
     colRowMapIterator: (cols, rows, mapFunction) => {
-        let matrix = new Array(cols).fill(new Array(rows))
+        let matrix = Array(cols).fill().map(() => Array(rows))
         module.exports.colRowIterator(cols, rows, (col, row) => {
             matrix[col][row] = mapFunction(col, row)
         })

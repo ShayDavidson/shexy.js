@@ -1,6 +1,6 @@
 import { colRowIterator, colRowMapIterator } from 'utils/iterators'
 
-let baseIteratorTests = function(cols, rows, spy) {
+let itShouldActLikeAColRowIterator = function(cols, rows, spy) {
     it('should call the handler function col * rows times', function() {
         spy.should.have.been.callCount(cols * rows)
     })
@@ -25,18 +25,29 @@ describe('colRowIterator', function() {
         colRowIterator(cols, rows, spy)
     })
 
-    baseIteratorTests(cols, rows, spy)
+    itShouldActLikeAColRowIterator(cols, rows, spy)
 })
 
 describe('colRowMapIterator', function() {
-    let mapFunction = () => {}
+    let mapFunction = (col, row) => {
+        return {col: col, row: row}
+    }
     let spy = sinon.spy(mapFunction)
     let cols = 2
     let rows = 2
+    let mapResult
 
     before(function() {
-        colRowMapIterator(cols, rows, spy)
+        mapResult = colRowMapIterator(cols, rows, spy)
     })
 
-    baseIteratorTests(cols, rows, spy)
+    itShouldActLikeAColRowIterator(cols, rows, spy)
+
+    it('should return a matrix mapped according to the map function', function() {
+        for (let col = 0; col < cols; col++) {
+            for (let row = 0; row < rows; row++) {
+                mapResult[col][row].should.deep.equal({col: col, row: row})
+            }
+        }
+    })
 })

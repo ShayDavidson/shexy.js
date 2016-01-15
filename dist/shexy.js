@@ -203,9 +203,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * @returns {undefined}
 	    */
 	    colRowIterator: function colRowIterator(cols, rows, handler) {
-	        for (var colIndex = 0; colIndex < cols; colIndex++) {
-	            for (var rowIndex = 0; rowIndex < rows; rowIndex++) {
-	                handler(colIndex, rowIndex);
+	        for (var col = 0; col < cols; col++) {
+	            for (var row = 0; row < rows; row++) {
+	                handler(col, row);
 	            }
 	        }
 	    },
@@ -219,7 +219,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * @returns {Array<Array[]>} The mapping result.
 	    */
 	    colRowMapIterator: function colRowMapIterator(cols, rows, mapFunction) {
-	        var matrix = new Array(cols).fill(new Array(rows));
+	        var matrix = Array(cols).fill().map(function () {
+	            return Array(rows);
+	        });
 	        module.exports.colRowIterator(cols, rows, function (col, row) {
 	            matrix[col][row] = mapFunction(col, row);
 	        });
