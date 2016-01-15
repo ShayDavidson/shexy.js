@@ -220,7 +220,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    */
 	    colRowMapIterator: function colRowMapIterator(cols, rows, mapFunction) {
 	        var matrix = new Array(cols).fill(new Array(rows));
-	        undefined.colRowIterator(cols, rows, function (col, row) {
+	        module.exports.colRowIterator(cols, rows, function (col, row) {
 	            matrix[col][row] = mapFunction(col, row);
 	        });
 	        return matrix;

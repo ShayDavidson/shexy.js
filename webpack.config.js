@@ -2,8 +2,8 @@ var webpack = require('webpack')
 
 module.exports = {
     entry: {
-        'shexy': './src/index.es6',
-        'shexy.min': './src/index.es6'
+        'shexy': './src/index.js',
+        'shexy.min': './src/index.js'
     },
     output: {
         libraryTarget: 'umd',
