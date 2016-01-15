@@ -55,7 +55,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
+
 	Object.defineProperty(exports, '__esModule', {
 	    value: true
 	});
@@ -76,56 +76,59 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
+
 	Object.defineProperty(exports, '__esModule', {
 	    value: true
 	});
-	
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
+
 	var _utilsVector = __webpack_require__(2);
-	
+
 	var _utilsVector2 = _interopRequireDefault(_utilsVector);
-	
+
 	var _utilsIterators = __webpack_require__(3);
-	
-	var DEFAULTS = {
-	    padding: 0,
+
+	var DEFAULT_HEX_OPTIONS = {
 	    radius: 20,
-	    scale: 1
+	    scaleX: 1,
+	    scaleY: 1
 	};
-	var NORMALIZED_HEX_COORDINATES = [new _utilsVector2['default'](-0.5, -0.866), new _utilsVector2['default'](0.5, -0.866), new _utilsVector2['default'](1, 0), new _utilsVector2['default'](0.5, 0.866), new _utilsVector2['default'](-0.5, 0.866), new _utilsVector2['default'](-1, 0)];
-	
+
+	/**
+	* The ratio between half the height of the hex to its radius,
+	* which actually equals sqrt(3)/2.
+	**/
+	var HEX_RATIO = 0.866;
+
+	var NORMALIZED_HEX_COORDINATES = [new _utilsVector2['default'](-0.5, -HEX_RATIO), new _utilsVector2['default'](0.5, -HEX_RATIO), new _utilsVector2['default'](1, 0), new _utilsVector2['default'](0.5, HEX_RATIO), new _utilsVector2['default'](-0.5, HEX_RATIO), new _utilsVector2['default'](-1, 0)];
+
 	exports['default'] = {
-	
+
 	    getHexVertices: function getHexVertices() {
 	        var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	        options = Object.assign({
-	            radius: DEFAULTS.radius,
-	            scaleX: DEFAULTS.scale,
-	            scaleY: DEFAULTS.scale
-	        }, options);
-	
+
+	        options = Object.assign(DEFAULT_HEX_OPTIONS, options);
+
 	        return NORMALIZED_HEX_COORDINATES.map(function (vector) {
 	            return vector.multiplyXY(options.radius * options.scaleX, options.radius * options.scaleY);
 	        });
 	    },
-	
-	    getBoardHexCenters: function getBoardHexCenters(rows, cols) {
+
+	    getBoardHexCenters: function getBoardHexCenters(cols, rows) {
 	        var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-	
+
 	        options = Object.assign({
-	            padding: DEFAULTS.padding,
-	            hex: {
-	                radius: DEFAULTS.radius,
-	                scaleX: DEFAULTS.scale,
-	                scaleY: DEFAULTS.scale
-	            }
+	            baseX: 0,
+	            baseY: 0,
+	            padding: 0,
+	            hex: DEFAULT_HEX_OPTIONS
 	        }, options);
-	
-	        (0, _utilsIterators.colRowIterator)(rows, cols, function (row, col) {
-	            console.log(row, col);
+
+	        return (0, _utilsIterators.colRowMapIterator)(cols, rows, function (col, row) {
+	            var centerX = options.radius * (1 + 1.5 * col);
+	            var centerY = options.radius * HEX_RATIO * (1 + col % 2 + 2 * row);
+	            return new _utilsVector2['default'](options.baseX + centerX, options.baseY + centerY);
 	        });
 	    }
 	};
@@ -136,36 +139,36 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	"use strict";
-	
+
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	
+
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
+
 	var Vector = (function () {
 	    function Vector() {
 	        var x = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
 	        var y = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-	
+
 	        _classCallCheck(this, Vector);
-	
+
 	        this.x = x;
 	        this.y = y;
 	    }
-	
+
 	    _createClass(Vector, [{
 	        key: "multiplyXY",
 	        value: function multiplyXY(xMultiplier, yMultiplier) {
 	            return new Vector(this.x * xMultiplier, this.y * yMultiplier);
 	        }
 	    }]);
-	
+
 	    return Vector;
 	})();
-	
+
 	exports["default"] = Vector;
 	module.exports = exports["default"];
 
@@ -179,21 +182,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	* @param {Integer} row The current row in the iteration step.
 	* @returns {undefined} Handler can return a value, but it'll not be used.
 	*/
-	
+
 	/**
 	* @callback rowColMapFunction
 	* @param {Integer} col The current column in the iteration step.
 	* @param {Integer} row The current row in the iteration step.
 	* @returns {*} Mapped value.
 	*/
-	
+
 	"use strict";
-	
+
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 	exports["default"] = {
-	
+
 	    /**
 	    * Given a number of columns and rows, this iterator goes over each
 	    * column-row pair and sends then as arguments to the `handler` argument.
@@ -209,7 +212,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 	    },
-	
+
 	    /**
 	    * Given a number of columns and rows, this iterator goes over each
 	    * column-row pair and sends then as arguments to the `handler` argument.
@@ -235,33 +238,33 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
+
 	Object.defineProperty(exports, '__esModule', {
 	    value: true
 	});
-	
+
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
+
 	var _hex = __webpack_require__(5);
-	
+
 	var _hex2 = _interopRequireDefault(_hex);
-	
+
 	var _utilsDirection = __webpack_require__(6);
-	
+
 	var _utilsDirection2 = _interopRequireDefault(_utilsDirection);
-	
+
 	var _utilsIterators = __webpack_require__(3);
-	
+
 	/**
 	* @Class Board
 	*/
-	
+
 	var Board = (function () {
-	
+
 	    /**
 	    * @constructs Board
 	    * @param {Object} options Options object
@@ -269,19 +272,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    * @param {Integer} options.cols Number of columns in the board
 	    * @returns {Board} New Board object
 	    */
-	
+
 	    function Board() {
 	        var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
+
 	        _classCallCheck(this, Board);
-	
+
 	        this.options = options;
 	        this.cols = options.cols;
 	        this.rows = options.rows;
 	        this._constructHexMatrix();
 	        this._connectHexMatrix();
 	    }
-	
+
 	    _createClass(Board, [{
 	        key: 'get',
 	        value: function get(col, row) {
@@ -293,7 +296,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        key: 'each',
 	        value: function each(func) {
 	            var _this = this;
-	
+
 	            (0, _utilsIterators.colRowIterator)(this.cols, this.rows, function (col, row) {
 	                func.call(_this, col, row, _this.get(col, row));
 	            });
@@ -309,7 +312,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        key: '_connectHexMatrix',
 	        value: function _connectHexMatrix() {
 	            var _this2 = this;
-	
+
 	            this.each(function (row, col, hex) {
 	                var oddColDiff = col % 2 === 0 ? 1 : 0;
 	                hex.connectAdajacent(_this2.get(row + 1, col), _utilsDirection2['default'].BOT);
@@ -318,10 +321,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            });
 	        }
 	    }]);
-	
+
 	    return Board;
 	})();
-	
+
 	exports['default'] = Board;
 	module.exports = exports['default'];
 
@@ -330,30 +333,30 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
+
 	Object.defineProperty(exports, '__esModule', {
 	    value: true
 	});
-	
+
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
+
 	var _utilsDirection = __webpack_require__(6);
-	
+
 	var _utilsDirection2 = _interopRequireDefault(_utilsDirection);
-	
+
 	var Hex = (function () {
 	    function Hex(row, col) {
 	        _classCallCheck(this, Hex);
-	
+
 	        this.row = row;
 	        this.col = col;
 	        this._adjacents = {};
 	    }
-	
+
 	    _createClass(Hex, [{
 	        key: 'connectAdajacent',
 	        value: function connectAdajacent(hex, dir) {
@@ -363,10 +366,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 	    }]);
-	
+
 	    return Hex;
 	})();
-	
+
 	exports['default'] = Hex;
 	module.exports = exports['default'];
 
@@ -375,7 +378,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	"use strict";
-	
+
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
@@ -386,8 +389,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    BOT: 3,
 	    BOT_LEFT: 4,
 	    TOP_LEFT: 5,
-	
-	    getOpposite: function getOpposite(dir) {
+
+	    getOppositeDirection: function getOppositeDirection(dir) {
 	        return (dir + 3) % 6;
 	    }
 	};

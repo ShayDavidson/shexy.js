@@ -6,7 +6,7 @@ export default {
     BOT_LEFT: 4,
     TOP_LEFT: 5,
 
-    getOpposite(dir) {
+    getOppositeDirection(dir) {
         return (dir + 3) % 6
     }
 }
