@@ -40,10 +40,17 @@ export default {
             hex: DEFAULT_HEX_OPTIONS
         }, options)
 
+        let xHexMultiplier = options.radius * options.hex.scaleX
+        let yHexMultiplier = options.radius * HEX_RATIO * options.hex.scaleY
+
         return colRowMapIterator(cols, rows, (col, row) => {
-            let centerX = options.radius * (1 + (1.5 * col))
-            let centerY = options.radius * HEX_RATIO * (1 + (col % 2) + (2 * row))
-            return new Vector(options.baseX + centerX, options.baseY + centerY)
+            let hexX = xHexMultiplier * (1 + (1.5 * col))
+            let hexY = yHexMultiplier * (1 + (col % 2) + (2 * row))
+            let paddingX = options.padding * (col + 1)
+            let paddingY = options.padding * (row + 1)
+            let centerX = options.baseX + hexX + paddingX
+            let centerY = options.baseY + hexY + paddingY
+            return new Vector(centerX, centerY)
         })
     }
 }
