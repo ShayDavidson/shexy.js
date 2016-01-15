@@ -1,4 +1,4 @@
-import Hex from 'models/hex'
+import Hex from 'hex'
 import Direction from 'utils/direction'
 import { colRowIterator, colRowMapIterator } from 'utils/iterators'
 

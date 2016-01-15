@@ -60,13 +60,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 	exports['default'] = {
-	    // Drawing
+	    // Curves (AKA Drawing)
 	    Designer: __webpack_require__(1),
 	    // Models
-	    BoardModel: __webpack_require__(7),
-	    HexModel: __webpack_require__(8),
+	    Board: __webpack_require__(4),
+	    Hex: __webpack_require__(5),
 	    // Utils
-	    Direction: __webpack_require__(5),
+	    Direction: __webpack_require__(6),
 	    Vector: __webpack_require__(2)
 	};
 	module.exports = exports['default'];
@@ -87,7 +87,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _utilsVector2 = _interopRequireDefault(_utilsVector);
 	
-	var _utilsIterators = __webpack_require__(6);
+	var _utilsIterators = __webpack_require__(3);
 	
 	var DEFAULTS = {
 	    padding: 0,
@@ -170,32 +170,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports["default"];
 
 /***/ },
-/* 3 */,
-/* 4 */,
-/* 5 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports["default"] = {
-	    TOP: 0,
-	    TOP_RIGHT: 1,
-	    BOT_RIGHT: 2,
-	    BOT: 3,
-	    BOT_LEFT: 4,
-	    TOP_LEFT: 5,
-	
-	    getOpposite: function getOpposite(dir) {
-	        return (dir + 3) % 6;
-	    }
-	};
-	module.exports = exports["default"];
-
-/***/ },
-/* 6 */
+/* 3 */
 /***/ function(module, exports) {
 
 	/**
@@ -254,7 +229,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports["default"];
 
 /***/ },
-/* 7 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -269,15 +244,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _modelsHex = __webpack_require__(8);
+	var _hex = __webpack_require__(5);
 	
-	var _modelsHex2 = _interopRequireDefault(_modelsHex);
+	var _hex2 = _interopRequireDefault(_hex);
 	
-	var _utilsDirection = __webpack_require__(5);
+	var _utilsDirection = __webpack_require__(6);
 	
 	var _utilsDirection2 = _interopRequireDefault(_utilsDirection);
 	
-	var _utilsIterators = __webpack_require__(6);
+	var _utilsIterators = __webpack_require__(3);
 	
 	/**
 	* @Class Board
@@ -325,7 +300,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        key: '_constructHexMatrix',
 	        value: function _constructHexMatrix() {
 	            this._hexMatrix = (0, _utilsIterators.colRowMapIterator)(this.cols, this.rows, function (col, row) {
-	                return new _modelsHex2['default'](col, row);
+	                return new _hex2['default'](col, row);
 	            });
 	        }
 	    }, {
@@ -349,7 +324,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 8 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -364,7 +339,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _utilsDirection = __webpack_require__(5);
+	var _utilsDirection = __webpack_require__(6);
 	
 	var _utilsDirection2 = _interopRequireDefault(_utilsDirection);
 	
@@ -392,6 +367,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	exports['default'] = Hex;
 	module.exports = exports['default'];
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports["default"] = {
+	    TOP: 0,
+	    TOP_RIGHT: 1,
+	    BOT_RIGHT: 2,
+	    BOT: 3,
+	    BOT_LEFT: 4,
+	    TOP_LEFT: 5,
+	
+	    getOpposite: function getOpposite(dir) {
+	        return (dir + 3) % 6;
+	    }
+	};
+	module.exports = exports["default"];
 
 /***/ }
 /******/ ])
