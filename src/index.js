@@ -6,5 +6,6 @@ export default {
     Hex: require('models/hex'),
     // Utils
     Direction: require('utils/direction'),
-    Vector: require('utils/vector')
+    Vector: require('utils/vector'),
+    Iterators: require('utils/iterators')
 }

@@ -67,7 +67,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Hex: __webpack_require__(5),
 	    // Utils
 	    Direction: __webpack_require__(6),
-	    Vector: __webpack_require__(2)
+	    Vector: __webpack_require__(2),
+	    Iterators: __webpack_require__(3)
 	};
 	module.exports = exports['default'];
 
@@ -122,17 +123,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	            baseX: 0,
 	            baseY: 0,
 	            padding: 0,
-	            hex: DEFAULT_HEX_OPTIONS
+	            hex: Object.assign(DEFAULT_HEX_OPTIONS, options.hex)
 	        }, options);
 	
-	        var xHexMultiplier = options.radius * options.hex.scaleX;
-	        var yHexMultiplier = options.radius * HEX_RATIO * options.hex.scaleY;
+	        var xHexMultiplier = options.hex.radius * options.hex.scaleX;
+	        var yHexMultiplier = options.hex.radius * HEX_RATIO * options.hex.scaleY;
 	
 	        return (0, _utilsIterators.colRowMapIterator)(cols, rows, function (col, row) {
 	            var hexX = xHexMultiplier * (1 + 1.5 * col);
 	            var hexY = yHexMultiplier * (1 + col % 2 + 2 * row);
 	            var paddingX = options.padding * (col + 1);
-	            var paddingY = options.padding * (row + 1);
+	            var paddingY = options.padding * (row + 1 + col % 2 * 0.5);
 	            var centerX = options.baseX + hexX + paddingX;
 	            var centerY = options.baseY + hexY + paddingY;
 	            return new _utilsVector2['default'](centerX, centerY);

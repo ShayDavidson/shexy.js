@@ -43,7 +43,7 @@ describe('colRowMapIterator', function() {
 
     itShouldActLikeAColRowIterator(cols, rows, spy)
 
-    it('should return a matrix mapped according to the map function', function() {
+    it('should return a matrix mapped according to the given map function', function() {
         for (let col = 0; col < cols; col++) {
             for (let row = 0; row < rows; row++) {
                 mapResult[col][row].should.deep.equal({col: col, row: row})
