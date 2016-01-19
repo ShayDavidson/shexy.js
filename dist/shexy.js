@@ -58,7 +58,6 @@ var Shexy =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _shexy2.default;
-	module.exports = exports['default'];
 
 /***/ },
 /* 1 */

@@ -21,14 +21,15 @@
   "bugs": {
     "url": "https://github.com/ShayDavidson/shexy.js/issues"
   },
-  "main": "./dist/shexy.js",
+  "main": "./lib/shexy.js",
   "scripts": {
+    "watch": "webpack --watch & babel src --out-dir lib --source-maps --watch",
     "test": "NODE_PATH=./lib mocha --require babel-register test/init.js test/**/*.js",
     "lint": "eslint src/**/*.js test/**/*.js --cache --max-warnings 0",
     "build": "npm build-lib && npm-build-dist",
     "build-lib": "babel src --out-dir lib --source-maps",
     "build-dist": "webpack",
-    "prepublish": "npm run lint && npm test && npm build"
+    "prepublish": "npm build-lib && npm run lint && npm test && npm build-dist"
   },
   "pre-push": "test",
   "devDependencies": {
