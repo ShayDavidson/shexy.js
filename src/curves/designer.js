@@ -1,4 +1,4 @@
-import Vector from 'utils/vector'
+import { Vector } from 'utils/vector'
 import { colRowMapIterator } from 'utils/iterators'
 import { deepMerge } from 'utils/object'
 
@@ -23,17 +23,17 @@ const NORMALIZED_HEX_COORDINATES = [
     new Vector(-1, 0)
 ]
 
-export default {
+export class Designer {
 
-    getHexVertices(options = {}) {
+    static getHexVertices(options = {}) {
         options = Object.assign(DEFAULT_HEX_OPTIONS, options)
 
         return NORMALIZED_HEX_COORDINATES.map((vector) => {
             return vector.multiplyXY(options.radius * options.scaleX, options.radius * options.scaleY)
         })
-    },
+    }
 
-    getBoardHexCenters(cols, rows, options = {}) {
+    static getBoardHexCenters(cols, rows, options = {}) {
         options = deepMerge({
             baseX: 0,
             baseY: 0,

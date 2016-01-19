@@ -6,7 +6,7 @@ module.exports = {
         'shexy.min': './src/index.js'
     },
     output: {
-        libraryTarget: 'umd',
+        libraryTarget: 'var',
         library: 'Shexy',
         path: __dirname + '/dist',
         filename: '[name].js'
@@ -21,7 +21,7 @@ module.exports = {
             loader: 'babel',
             query: {
                 presets: ['es2015'],
-                plugins: ['transform-object-assign']
+                plugins: ['transform-object-assign', 'add-module-exports']
             }
         }]
     },
@@ -29,7 +29,10 @@ module.exports = {
         new webpack.NoErrorsPlugin(),
         new webpack.optimize.UglifyJsPlugin({
             include: /\.min\.js$/,
-            minimize: true
+            minimize: true,
+            compress: {
+                warnings: false
+            }
         })
     ],
     stats: {

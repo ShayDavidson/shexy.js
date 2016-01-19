@@ -1,14 +1,5 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else if(typeof exports === 'object')
-		exports["Shexy"] = factory();
-	else
-		root["Shexy"] = factory();
-})(this, function() {
-return /******/ (function(modules) { // webpackBootstrap
+var Shexy =
+/******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -55,26 +46,19 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
+
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
-	exports.default = {
-	    Curves: {
-	        Designer: __webpack_require__(1)
-	    },
-	    Models: {
-	        Board: __webpack_require__(5),
-	        Hex: __webpack_require__(6)
-	    },
-	    Utils: {
-	        Direction: __webpack_require__(7),
-	        Vector: __webpack_require__(2),
-	        Iterators: __webpack_require__(3),
-	        Object: __webpack_require__(4)
-	    }
-	
-	};
+
+	var _shexy = __webpack_require__(1);
+
+	var _shexy2 = _interopRequireDefault(_shexy);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _shexy2.default;
+	module.exports = exports['default'];
 
 /***/ },
 /* 1 */
@@ -82,21 +66,47 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var Shexy = exports.Shexy = {
+	    Curves: {
+	        Designer: __webpack_require__(2)
+	    },
+	    Models: {
+	        Board: __webpack_require__(6),
+	        Hex: __webpack_require__(7)
+	    },
+	    Utils: {
+	        Direction: __webpack_require__(8),
+	        Vector: __webpack_require__(3),
+	        Iterators: __webpack_require__(4),
+	        Object: __webpack_require__(5)
+	    }
+	};
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.Designer = undefined;
 	
-	var _vector = __webpack_require__(2);
+	var _vector = __webpack_require__(3);
 	
-	var _vector2 = _interopRequireDefault(_vector);
+	var _iterators = __webpack_require__(4);
 	
-	var _iterators = __webpack_require__(3);
+	var _object = __webpack_require__(5);
 	
-	var _object = __webpack_require__(4);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var DEFAULT_HEX_OPTIONS = {
 	    radius: 20,
@@ -110,45 +120,56 @@ return /******/ (function(modules) { // webpackBootstrap
 	**/
 	var HEX_RATIO = 0.866;
 	
-	var NORMALIZED_HEX_COORDINATES = [new _vector2.default(-0.5, -HEX_RATIO), new _vector2.default(0.5, -HEX_RATIO), new _vector2.default(1, 0), new _vector2.default(0.5, HEX_RATIO), new _vector2.default(-0.5, HEX_RATIO), new _vector2.default(-1, 0)];
+	var NORMALIZED_HEX_COORDINATES = [new _vector.Vector(-0.5, -HEX_RATIO), new _vector.Vector(0.5, -HEX_RATIO), new _vector.Vector(1, 0), new _vector.Vector(0.5, HEX_RATIO), new _vector.Vector(-0.5, HEX_RATIO), new _vector.Vector(-1, 0)];
 	
-	exports.default = {
-	    getHexVertices: function getHexVertices() {
-	        var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
-	        options = _extends(DEFAULT_HEX_OPTIONS, options);
-	
-	        return NORMALIZED_HEX_COORDINATES.map(function (vector) {
-	            return vector.multiplyXY(options.radius * options.scaleX, options.radius * options.scaleY);
-	        });
-	    },
-	    getBoardHexCenters: function getBoardHexCenters(cols, rows) {
-	        var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-	
-	        options = (0, _object.deepMerge)({
-	            baseX: 0,
-	            baseY: 0,
-	            padding: 0,
-	            hex: DEFAULT_HEX_OPTIONS
-	        }, options);
-	
-	        var xHexMultiplier = options.hex.radius * options.hex.scaleX;
-	        var yHexMultiplier = options.hex.radius * HEX_RATIO * options.hex.scaleY;
-	
-	        return (0, _iterators.colRowMapIterator)(cols, rows, function (col, row) {
-	            var hexX = xHexMultiplier * (1 + 1.5 * col);
-	            var hexY = yHexMultiplier * (1 + col % 2 + 2 * row);
-	            var paddingX = options.padding * (col + 1);
-	            var paddingY = options.padding * (row + 1 + col % 2 * 0.5);
-	            var centerX = options.baseX + hexX + paddingX;
-	            var centerY = options.baseY + hexY + paddingY;
-	            return new _vector2.default(centerX, centerY);
-	        });
+	var Designer = exports.Designer = function () {
+	    function Designer() {
+	        _classCallCheck(this, Designer);
 	    }
-	};
+	
+	    _createClass(Designer, null, [{
+	        key: 'getHexVertices',
+	        value: function getHexVertices() {
+	            var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	
+	            options = _extends(DEFAULT_HEX_OPTIONS, options);
+	
+	            return NORMALIZED_HEX_COORDINATES.map(function (vector) {
+	                return vector.multiplyXY(options.radius * options.scaleX, options.radius * options.scaleY);
+	            });
+	        }
+	    }, {
+	        key: 'getBoardHexCenters',
+	        value: function getBoardHexCenters(cols, rows) {
+	            var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	
+	            options = (0, _object.deepMerge)({
+	                baseX: 0,
+	                baseY: 0,
+	                padding: 0,
+	                hex: DEFAULT_HEX_OPTIONS
+	            }, options);
+	
+	            var xHexMultiplier = options.hex.radius * options.hex.scaleX;
+	            var yHexMultiplier = options.hex.radius * HEX_RATIO * options.hex.scaleY;
+	
+	            return (0, _iterators.colRowMapIterator)(cols, rows, function (col, row) {
+	                var hexX = xHexMultiplier * (1 + 1.5 * col);
+	                var hexY = yHexMultiplier * (1 + col % 2 + 2 * row);
+	                var paddingX = options.padding * (col + 1);
+	                var paddingY = options.padding * (row + 1 + col % 2 * 0.5);
+	                var centerX = options.baseX + hexX + paddingX;
+	                var centerY = options.baseY + hexY + paddingY;
+	                return new _vector.Vector(centerX, centerY);
+	            });
+	        }
+	    }]);
+	
+	    return Designer;
+	}();
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -161,7 +182,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var Vector = function () {
+	var Vector = exports.Vector = function () {
 	    function Vector() {
 	        var x = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
 	        var y = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
@@ -181,11 +202,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    return Vector;
 	}();
-	
-	exports.default = Vector;
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -243,7 +262,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -292,7 +311,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -302,18 +321,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.Board = undefined;
 	
-	var _hex = __webpack_require__(6);
+	var _hex = __webpack_require__(7);
 	
-	var _hex2 = _interopRequireDefault(_hex);
+	var _direction = __webpack_require__(8);
 	
-	var _direction = __webpack_require__(7);
-	
-	var _direction2 = _interopRequireDefault(_direction);
-	
-	var _iterators = __webpack_require__(3);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _iterators = __webpack_require__(4);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -321,7 +335,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	* @Class Board
 	*/
 	
-	var Board = function () {
+	var Board = exports.Board = function () {
 	
 	    /**
 	    * @constructs Board
@@ -363,7 +377,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        key: '_constructHexMatrix',
 	        value: function _constructHexMatrix() {
 	            this._hexMatrix = (0, _iterators.colRowMapIterator)(this.cols, this.rows, function (col, row) {
-	                return new _hex2.default(col, row);
+	                return new _hex.Hex(col, row);
 	            });
 	        }
 	    }, {
@@ -373,20 +387,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            this.each(function (row, col, hex) {
 	                var oddColDiff = col % 2 === 0 ? 1 : 0;
-	                hex.connectAdajacent(_this2.get(row + 1, col), _direction2.default.BOT);
-	                hex.connectAdajacent(_this2.get(row + oddColDiff, col + 1), _direction2.default.BOT_RIGHT);
-	                hex.connectAdajacent(_this2.get(row - 1 + oddColDiff, col + 1), _direction2.default.TOP_RIGHT);
+	                hex.connectAdajacent(_this2.get(row + 1, col), _direction.Direction.BOT);
+	                hex.connectAdajacent(_this2.get(row + oddColDiff, col + 1), _direction.Direction.BOT_RIGHT);
+	                hex.connectAdajacent(_this2.get(row - 1 + oddColDiff, col + 1), _direction.Direction.TOP_RIGHT);
 	            });
 	        }
 	    }]);
 	
 	    return Board;
 	}();
-	
-	exports.default = Board;
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -396,16 +408,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.Hex = undefined;
 	
-	var _direction = __webpack_require__(7);
-	
-	var _direction2 = _interopRequireDefault(_direction);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _direction = __webpack_require__(8);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var Hex = function () {
+	var Hex = exports.Hex = function () {
 	    function Hex(row, col) {
 	        _classCallCheck(this, Hex);
 	
@@ -419,18 +428,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        value: function connectAdajacent(hex, dir) {
 	            if (hex && !this._adjacents[dir]) {
 	                this._adjacents[dir] = hex;
-	                hex.connectAdajacent(this, _direction2.default.getOpposite(dir));
+	                hex.connectAdajacent(this, _direction.Direction.getOpposite(dir));
 	            }
 	        }
 	    }]);
 	
 	    return Hex;
 	}();
-	
-	exports.default = Hex;
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -438,21 +445,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.default = {
-	    TOP: 0,
-	    TOP_RIGHT: 1,
-	    BOT_RIGHT: 2,
-	    BOT: 3,
-	    BOT_LEFT: 4,
-	    TOP_LEFT: 5,
-	
-	    getOppositeDirection: function getOppositeDirection(dir) {
-	        return (dir + 3) % 6;
-	    }
+	exports.getOpposite = getOpposite;
+	var ENUM = exports.ENUM = {
+	    top: 0,
+	    topRight: 1,
+	    botRight: 2,
+	    bot: 3,
+	    botLeft: 4,
+	    topLeft: 5
 	};
+	
+	function getOpposite(dir) {
+	    return (dir + 3) % 6;
+	}
 
 /***/ }
-/******/ ])
-});
-;
+/******/ ]);
 //# sourceMappingURL=shexy.js.map

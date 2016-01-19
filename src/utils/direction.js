@@ -1,12 +1,12 @@
-export default {
-    TOP: 0,
-    TOP_RIGHT: 1,
-    BOT_RIGHT: 2,
-    BOT: 3,
-    BOT_LEFT: 4,
-    TOP_LEFT: 5,
+export const ENUM = {
+    top: 0,
+    topRight: 1,
+    botRight: 2,
+    bot: 3,
+    botLeft: 4,
+    topLeft: 5
+}
 
-    getOppositeDirection(dir) {
-        return (dir + 3) % 6
-    }
+export function getOpposite(dir) {
+    return (dir + 3) % 6
 }

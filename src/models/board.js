@@ -1,11 +1,11 @@
-import Hex from 'hex'
-import Direction from 'utils/direction'
+import { Hex } from 'hex'
+import { Direction } from 'utils/direction'
 import { colRowIterator, colRowMapIterator } from 'utils/iterators'
 
 /**
 * @Class Board
 */
-export default class Board {
+export class Board {
 
     /**
     * @constructs Board

@@ -9,8 +9,8 @@
 - [ ] Board - first row starts high or low (also pass to designer)
 
 ## Library infrasturcture
+- [ ] Add more tasks (build dist on publish for example).
 - [ ] Tests that require for lib and script import work in browser.
-- [ ] Think of function names (import policy).
 - [ ] Convert npm pre-publish hook to new version.
 - [ ] Move build script to a different file?
 - [ ] Add test coverage (with threshold).
