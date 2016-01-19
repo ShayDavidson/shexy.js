@@ -10,9 +10,8 @@
 
 ## Library infrasturcture
 - [ ] Tests that require for lib and script import work in browser.
-- [ ] Upgrade to Babel 6 and remove "default" exported value (right ES6 implemantion, make sure it works with CommonJS, var lib, AMD, require JS and what not).
 - [ ] Think of function names (import policy).
-- [ ] Convert prepublish hook to new version.
+- [ ] Convert npm pre-publish hook to new version.
 - [ ] Move build script to a different file?
 - [ ] Add test coverage (with threshold).
 - [ ] Add JSDoc.

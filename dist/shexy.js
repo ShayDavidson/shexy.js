@@ -56,22 +56,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports['default'] = {
-	    // Curves (AKA Drawing)
-	    Designer: __webpack_require__(1),
-	    // Models
-	    Board: __webpack_require__(5),
-	    Hex: __webpack_require__(6),
-	    // Utils
-	    Direction: __webpack_require__(7),
-	    Vector: __webpack_require__(2),
-	    Iterators: __webpack_require__(3),
-	    Object: __webpack_require__(4)
+	exports.default = {
+	    Curves: {
+	        Designer: __webpack_require__(1)
+	    },
+	    Models: {
+	        Board: __webpack_require__(5),
+	        Hex: __webpack_require__(6)
+	    },
+	    Utils: {
+	        Direction: __webpack_require__(7),
+	        Vector: __webpack_require__(2),
+	        Iterators: __webpack_require__(3),
+	        Object: __webpack_require__(4)
+	    }
+	
 	};
-	module.exports = exports['default'];
 
 /***/ },
 /* 1 */
@@ -79,19 +82,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	var _vector = __webpack_require__(2);
 	
-	var _utilsVector = __webpack_require__(2);
+	var _vector2 = _interopRequireDefault(_vector);
 	
-	var _utilsVector2 = _interopRequireDefault(_utilsVector);
+	var _iterators = __webpack_require__(3);
 	
-	var _utilsIterators = __webpack_require__(3);
+	var _object = __webpack_require__(4);
 	
-	var _utilsObject = __webpack_require__(4);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var DEFAULT_HEX_OPTIONS = {
 	    radius: 20,
@@ -105,24 +110,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	**/
 	var HEX_RATIO = 0.866;
 	
-	var NORMALIZED_HEX_COORDINATES = [new _utilsVector2['default'](-0.5, -HEX_RATIO), new _utilsVector2['default'](0.5, -HEX_RATIO), new _utilsVector2['default'](1, 0), new _utilsVector2['default'](0.5, HEX_RATIO), new _utilsVector2['default'](-0.5, HEX_RATIO), new _utilsVector2['default'](-1, 0)];
+	var NORMALIZED_HEX_COORDINATES = [new _vector2.default(-0.5, -HEX_RATIO), new _vector2.default(0.5, -HEX_RATIO), new _vector2.default(1, 0), new _vector2.default(0.5, HEX_RATIO), new _vector2.default(-0.5, HEX_RATIO), new _vector2.default(-1, 0)];
 	
-	exports['default'] = {
-	
+	exports.default = {
 	    getHexVertices: function getHexVertices() {
 	        var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	        options = Object.assign(DEFAULT_HEX_OPTIONS, options);
+	        options = _extends(DEFAULT_HEX_OPTIONS, options);
 	
 	        return NORMALIZED_HEX_COORDINATES.map(function (vector) {
 	            return vector.multiplyXY(options.radius * options.scaleX, options.radius * options.scaleY);
 	        });
 	    },
-	
 	    getBoardHexCenters: function getBoardHexCenters(cols, rows) {
 	        var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 	
-	        options = (0, _utilsObject.deepMerge)({
+	        options = (0, _object.deepMerge)({
 	            baseX: 0,
 	            baseY: 0,
 	            padding: 0,
@@ -132,18 +135,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var xHexMultiplier = options.hex.radius * options.hex.scaleX;
 	        var yHexMultiplier = options.hex.radius * HEX_RATIO * options.hex.scaleY;
 	
-	        return (0, _utilsIterators.colRowMapIterator)(cols, rows, function (col, row) {
+	        return (0, _iterators.colRowMapIterator)(cols, rows, function (col, row) {
 	            var hexX = xHexMultiplier * (1 + 1.5 * col);
 	            var hexY = yHexMultiplier * (1 + col % 2 + 2 * row);
 	            var paddingX = options.padding * (col + 1);
 	            var paddingY = options.padding * (row + 1 + col % 2 * 0.5);
 	            var centerX = options.baseX + hexX + paddingX;
 	            var centerY = options.baseY + hexY + paddingY;
-	            return new _utilsVector2['default'](centerX, centerY);
+	            return new _vector2.default(centerX, centerY);
 	        });
 	    }
 	};
-	module.exports = exports['default'];
 
 /***/ },
 /* 2 */
@@ -151,15 +153,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var Vector = (function () {
+	var Vector = function () {
 	    function Vector() {
 	        var x = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
 	        var y = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
@@ -178,15 +180,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }]);
 	
 	    return Vector;
-	})();
+	}();
 	
-	exports["default"] = Vector;
-	module.exports = exports["default"];
+	exports.default = Vector;
 
 /***/ },
 /* 3 */
 /***/ function(module, exports) {
 
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.colRowIterator = colRowIterator;
+	exports.colRowMapIterator = colRowMapIterator;
 	/**
 	* @callback rowColHandler
 	* @param {Integer} col The current column in the iteration step.
@@ -201,61 +209,50 @@ return /******/ (function(modules) { // webpackBootstrap
 	* @returns {*} Mapped value.
 	*/
 	
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports["default"] = {
-	
-	    /**
-	    * Given a number of columns and rows, this iterator goes over each
-	    * column-row pair and sends then as arguments to the `handler` argument.
-	    * @param {Integer} cols Number of columns to iterate over.
-	    * @param {Integer} rows Number of rows to iterate over.
-	    * @param {rowColHandler} handler A handler for each step of the iteration.
-	    * @returns {undefined}
-	    */
-	    colRowIterator: function colRowIterator(cols, rows, handler) {
-	        for (var col = 0; col < cols; col++) {
-	            for (var row = 0; row < rows; row++) {
-	                handler(col, row);
-	            }
+	/**
+	* Given a number of columns and rows, this iterator goes over each
+	* column-row pair and sends then as arguments to the `handler` argument.
+	* @param {Integer} cols Number of columns to iterate over.
+	* @param {Integer} rows Number of rows to iterate over.
+	* @param {rowColHandler} handler A handler for each step of the iteration.
+	* @returns {undefined}
+	*/
+	function colRowIterator(cols, rows, handler) {
+	    for (var col = 0; col < cols; col++) {
+	        for (var row = 0; row < rows; row++) {
+	            handler(col, row);
 	        }
-	    },
-	
-	    /**
-	    * Given a number of columns and rows, this iterator goes over each
-	    * column-row pair and sends then as arguments to the `handler` argument.
-	    * @param {Integer} cols Number of columns to iterate over.
-	    * @param {Integer} rows Number of rows to iterate over.
-	    * @param {rowColMapFunction} mapFunction A map function that returns the mapped value.
-	    * @returns {Array<Array[]>} The mapping result.
-	    */
-	    colRowMapIterator: function colRowMapIterator(cols, rows, mapFunction) {
-	        var matrix = Array(cols).fill().map(function () {
-	            return Array(rows);
-	        });
-	        module.exports.colRowIterator(cols, rows, function (col, row) {
-	            matrix[col][row] = mapFunction(col, row);
-	        });
-	        return matrix;
 	    }
-	};
-	module.exports = exports["default"];
+	}
+	
+	/**
+	* Given a number of columns and rows, this iterator goes over each
+	* column-row pair and sends then as arguments to the `handler` argument.
+	* @param {Integer} cols Number of columns to iterate over.
+	* @param {Integer} rows Number of rows to iterate over.
+	* @param {rowColMapFunction} mapFunction A map function that returns the mapped value.
+	* @returns {Array<Array[]>} The mapping result.
+	*/
+	function colRowMapIterator(cols, rows, mapFunction) {
+	    var matrix = new Array(cols);
+	    colRowIterator(cols, rows, function (col, row) {
+	        matrix[col] || (matrix[col] = new Array(rows));
+	        matrix[col][row] = mapFunction(col, row);
+	    });
+	    return matrix;
+	}
 
 /***/ },
 /* 4 */
 /***/ function(module, exports) {
 
-	/**
-	 * Simple is object check.
-	 * @param {*} item The value to check if it's an object or not.
-	 * @returns {Boolean} True if the given value is an object.
-	 */
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	
+	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 	exports.isObject = isObject;
@@ -263,8 +260,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
+	/**
+	 * Simple is object check.
+	 * @param {*} item The value to check if it's an object or not.
+	 * @returns {Boolean} True if the given value is an object.
+	 */
 	function isObject(item) {
-	    return item && typeof item === 'object' && !Array.isArray(item) && item !== null;
+	    return item && (typeof item === 'undefined' ? 'undefined' : _typeof(item)) === 'object' && !Array.isArray(item) && item !== null;
 	}
 	
 	/**
@@ -273,17 +275,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {Object} source source object.
 	 * @returns {Object} Deep merged object (source into target).
 	 */
-	
 	function deepMerge(target, source) {
 	    if (isObject(target) && isObject(source)) {
 	        Object.keys(source).forEach(function (key) {
 	            if (isObject(source[key])) {
 	                if (!target[key]) {
-	                    Object.assign(target, _defineProperty({}, key, {}));
+	                    _extends(target, _defineProperty({}, key, {}));
 	                }
 	                deepMerge(target[key], source[key]);
 	            } else {
-	                Object.assign(target, _defineProperty({}, key, source[key]));
+	                _extends(target, _defineProperty({}, key, source[key]));
 	            }
 	        });
 	    }
@@ -296,31 +297,31 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
 	var _hex = __webpack_require__(6);
 	
 	var _hex2 = _interopRequireDefault(_hex);
 	
-	var _utilsDirection = __webpack_require__(7);
+	var _direction = __webpack_require__(7);
 	
-	var _utilsDirection2 = _interopRequireDefault(_utilsDirection);
+	var _direction2 = _interopRequireDefault(_direction);
 	
-	var _utilsIterators = __webpack_require__(3);
+	var _iterators = __webpack_require__(3);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	/**
 	* @Class Board
 	*/
 	
-	var Board = (function () {
+	var Board = function () {
 	
 	    /**
 	    * @constructs Board
@@ -354,15 +355,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        value: function each(func) {
 	            var _this = this;
 	
-	            (0, _utilsIterators.colRowIterator)(this.cols, this.rows, function (col, row) {
+	            (0, _iterators.colRowIterator)(this.cols, this.rows, function (col, row) {
 	                func.call(_this, col, row, _this.get(col, row));
 	            });
 	        }
 	    }, {
 	        key: '_constructHexMatrix',
 	        value: function _constructHexMatrix() {
-	            this._hexMatrix = (0, _utilsIterators.colRowMapIterator)(this.cols, this.rows, function (col, row) {
-	                return new _hex2['default'](col, row);
+	            this._hexMatrix = (0, _iterators.colRowMapIterator)(this.cols, this.rows, function (col, row) {
+	                return new _hex2.default(col, row);
 	            });
 	        }
 	    }, {
@@ -372,18 +373,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            this.each(function (row, col, hex) {
 	                var oddColDiff = col % 2 === 0 ? 1 : 0;
-	                hex.connectAdajacent(_this2.get(row + 1, col), _utilsDirection2['default'].BOT);
-	                hex.connectAdajacent(_this2.get(row + oddColDiff, col + 1), _utilsDirection2['default'].BOT_RIGHT);
-	                hex.connectAdajacent(_this2.get(row - 1 + oddColDiff, col + 1), _utilsDirection2['default'].TOP_RIGHT);
+	                hex.connectAdajacent(_this2.get(row + 1, col), _direction2.default.BOT);
+	                hex.connectAdajacent(_this2.get(row + oddColDiff, col + 1), _direction2.default.BOT_RIGHT);
+	                hex.connectAdajacent(_this2.get(row - 1 + oddColDiff, col + 1), _direction2.default.TOP_RIGHT);
 	            });
 	        }
 	    }]);
 	
 	    return Board;
-	})();
+	}();
 	
-	exports['default'] = Board;
-	module.exports = exports['default'];
+	exports.default = Board;
 
 /***/ },
 /* 6 */
@@ -391,21 +391,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 	
-	Object.defineProperty(exports, '__esModule', {
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _direction = __webpack_require__(7);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	var _direction2 = _interopRequireDefault(_direction);
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var _utilsDirection = __webpack_require__(7);
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var _utilsDirection2 = _interopRequireDefault(_utilsDirection);
-	
-	var Hex = (function () {
+	var Hex = function () {
 	    function Hex(row, col) {
 	        _classCallCheck(this, Hex);
 	
@@ -419,16 +419,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        value: function connectAdajacent(hex, dir) {
 	            if (hex && !this._adjacents[dir]) {
 	                this._adjacents[dir] = hex;
-	                hex.connectAdajacent(this, _utilsDirection2['default'].getOpposite(dir));
+	                hex.connectAdajacent(this, _direction2.default.getOpposite(dir));
 	            }
 	        }
 	    }]);
 	
 	    return Hex;
-	})();
+	}();
 	
-	exports['default'] = Hex;
-	module.exports = exports['default'];
+	exports.default = Hex;
 
 /***/ },
 /* 7 */
@@ -439,7 +438,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports["default"] = {
+	exports.default = {
 	    TOP: 0,
 	    TOP_RIGHT: 1,
 	    BOT_RIGHT: 2,
@@ -451,7 +450,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return (dir + 3) % 6;
 	    }
 	};
-	module.exports = exports["default"];
 
 /***/ }
 /******/ ])
