@@ -24,7 +24,8 @@
   "main": "./lib/shexy.js",
   "scripts": {
     "watch": "webpack --watch & babel src --out-dir lib --source-maps --watch",
-    "test": "NODE_PATH=./lib mocha --require babel-register test/init.js test/**/*.js",
+    "test": "NODE_PATH=./lib mocha test/**/*.js",
+    "test-es6": "NODE_PATH=./src mocha test/**/*.js",
     "lint": "eslint src/**/*.js test/**/*.js --cache --max-warnings 0",
     "build": "npm build-lib && npm-build-dist",
     "build-lib": "babel src --out-dir lib --source-maps",

@@ -9,16 +9,14 @@
 - [ ] Board - first row starts high or low (also pass to designer)
 
 ## Library infrasturcture
-- [ ] Add more tasks (build dist on publish for example).
-- [ ] Tests that require for lib and script import work in browser.
-- [ ] Convert npm pre-publish hook to new version.
-- [ ] Move build script to a different file?
 - [ ] Add test coverage (with threshold).
 - [ ] Add JSDoc.
-- [ ] Extend CONTRIBUTING and add CODE_OF_CONDUCT
+- [ ] Tests that require for lib and script import work in browser.
+- [ ] Modify issues / pull-request tags.
+- [ ] Extend CONTRIBUTING and add CODE_OF_CONDUCT.
+- [ ] Convert npm pre-publish hook to new version.
 - [ ] Add CI / build checker / pull-request checker (travis?).
 - [ ] Add Wiki.
-- [ ] Modify issues / pull-request tags.
 - [ ] Add proper tags.
 - [ ] README (+logo).
 - [ ] Add examples.
