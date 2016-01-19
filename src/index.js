@@ -7,5 +7,6 @@ export default {
     // Utils
     Direction: require('utils/direction'),
     Vector: require('utils/vector'),
-    Iterators: require('utils/iterators')
+    Iterators: require('utils/iterators'),
+    Object: require('utils/object')
 }

@@ -63,12 +63,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // Curves (AKA Drawing)
 	    Designer: __webpack_require__(1),
 	    // Models
-	    Board: __webpack_require__(4),
-	    Hex: __webpack_require__(5),
+	    Board: __webpack_require__(5),
+	    Hex: __webpack_require__(6),
 	    // Utils
-	    Direction: __webpack_require__(6),
+	    Direction: __webpack_require__(7),
 	    Vector: __webpack_require__(2),
-	    Iterators: __webpack_require__(3)
+	    Iterators: __webpack_require__(3),
+	    Object: __webpack_require__(4)
 	};
 	module.exports = exports['default'];
 
@@ -89,6 +90,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _utilsVector2 = _interopRequireDefault(_utilsVector);
 	
 	var _utilsIterators = __webpack_require__(3);
+	
+	var _utilsObject = __webpack_require__(4);
 	
 	var DEFAULT_HEX_OPTIONS = {
 	    radius: 20,
@@ -119,11 +122,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    getBoardHexCenters: function getBoardHexCenters(cols, rows) {
 	        var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 	
-	        options = Object.assign({
+	        options = (0, _utilsObject.deepMerge)({
 	            baseX: 0,
 	            baseY: 0,
 	            padding: 0,
-	            hex: Object.assign(DEFAULT_HEX_OPTIONS, options.hex)
+	            hex: DEFAULT_HEX_OPTIONS
 	        }, options);
 	
 	        var xHexMultiplier = options.hex.radius * options.hex.scaleX;
@@ -243,6 +246,52 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 4 */
+/***/ function(module, exports) {
+
+	/**
+	 * Simple is object check.
+	 * @param {*} item The value to check if it's an object or not.
+	 * @returns {Boolean} True if the given value is an object.
+	 */
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	exports.isObject = isObject;
+	exports.deepMerge = deepMerge;
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	function isObject(item) {
+	    return item && typeof item === 'object' && !Array.isArray(item) && item !== null;
+	}
+	
+	/**
+	 * Deep merge two objects.
+	 * @param {Object} target target object.
+	 * @param {Object} source source object.
+	 * @returns {Object} Deep merged object (source into target).
+	 */
+	
+	function deepMerge(target, source) {
+	    if (isObject(target) && isObject(source)) {
+	        Object.keys(source).forEach(function (key) {
+	            if (isObject(source[key])) {
+	                if (!target[key]) {
+	                    Object.assign(target, _defineProperty({}, key, {}));
+	                }
+	                deepMerge(target[key], source[key]);
+	            } else {
+	                Object.assign(target, _defineProperty({}, key, source[key]));
+	            }
+	        });
+	    }
+	    return target;
+	}
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -257,11 +306,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _hex = __webpack_require__(5);
+	var _hex = __webpack_require__(6);
 	
 	var _hex2 = _interopRequireDefault(_hex);
 	
-	var _utilsDirection = __webpack_require__(6);
+	var _utilsDirection = __webpack_require__(7);
 	
 	var _utilsDirection2 = _interopRequireDefault(_utilsDirection);
 	
@@ -337,7 +386,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -352,7 +401,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var _utilsDirection = __webpack_require__(6);
+	var _utilsDirection = __webpack_require__(7);
 	
 	var _utilsDirection2 = _interopRequireDefault(_utilsDirection);
 	
@@ -382,7 +431,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	"use strict";

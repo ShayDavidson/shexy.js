@@ -1,5 +1,6 @@
 import Vector from 'utils/vector'
 import { colRowMapIterator } from 'utils/iterators'
+import { deepMerge } from 'utils/object'
 
 const DEFAULT_HEX_OPTIONS = {
     radius: 20,
@@ -33,11 +34,11 @@ export default {
     },
 
     getBoardHexCenters(cols, rows, options = {}) {
-        options = Object.assign({
+        options = deepMerge({
             baseX: 0,
             baseY: 0,
             padding: 0,
-            hex: Object.assign(DEFAULT_HEX_OPTIONS, options.hex)
+            hex: DEFAULT_HEX_OPTIONS
         }, options)
 
         let xHexMultiplier = options.hex.radius * options.hex.scaleX
