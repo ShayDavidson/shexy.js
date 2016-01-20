@@ -82,12 +82,15 @@ var Shexy =
 	    ObjectUtils: ObjectUtils,
 	    Vector: _vector.Vector
 	};
+	module.exports = exports['default'];
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
@@ -128,7 +131,7 @@ var Shexy =
 	        value: function getHexVertices() {
 	            var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	            options = Object.assign(DEFAULT_HEX_OPTIONS, options);
+	            options = _extends(DEFAULT_HEX_OPTIONS, options);
 	
 	            return NORMALIZED_HEX_COORDINATES.map(function (vector) {
 	                return vector.multiplyXY(options.radius * options.scaleX, options.radius * options.scaleY);
@@ -263,6 +266,8 @@ var Shexy =
 
 	'use strict';
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 	
 	Object.defineProperty(exports, "__esModule", {
@@ -293,11 +298,11 @@ var Shexy =
 	        Object.keys(source).forEach(function (key) {
 	            if (isObject(source[key])) {
 	                if (!target[key]) {
-	                    Object.assign(target, _defineProperty({}, key, {}));
+	                    _extends(target, _defineProperty({}, key, {}));
 	                }
 	                deepMerge(target[key], source[key]);
 	            } else {
-	                Object.assign(target, _defineProperty({}, key, source[key]));
+	                _extends(target, _defineProperty({}, key, source[key]));
 	            }
 	        });
 	    }
