@@ -21,7 +21,7 @@
   "bugs": {
     "url": "https://github.com/ShayDavidson/shexy.js/issues"
   },
-  "main": "./lib/shexy.js",
+  "main": "./lib/index.js",
   "scripts": {
     "watch": "webpack --watch & babel src --out-dir lib --source-maps --watch",
     "test": "NODE_PATH=./lib mocha test/**/*.js",
@@ -29,15 +29,13 @@
     "lint": "eslint src/**/*.js test/**/*.js --cache --max-warnings 0",
     "build": "npm build-lib && npm-build-dist",
     "build-lib": "babel src --out-dir lib --source-maps",
-    "build-dist": "webpack",
-    "prepublish": "npm build-lib && npm run lint && npm test && npm build-dist"
+    "build-dist": "webpack"
   },
   "pre-push": "test",
   "devDependencies": {
     "babel-cli": "^6.4.0",
     "babel-core": "^6.4.0",
     "babel-loader": "^6.2.1",
-    "babel-plugin-add-module-exports": "^0.1.3-alpha",
     "babel-plugin-transform-object-assign": "^6.3.13",
     "babel-plugin-transform-runtime": "^6.4.3",
     "babel-preset-es2015": "^6.3.13",

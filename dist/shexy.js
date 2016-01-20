@@ -46,46 +46,62 @@ var Shexy =
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _shexy = __webpack_require__(1);
-
-	var _shexy2 = _interopRequireDefault(_shexy);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = _shexy2.default;
-
-/***/ },
-/* 1 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.Shexy = undefined;
+	
+	var _designer = __webpack_require__(1);
+	
+	var _designer2 = _interopRequireDefault(_designer);
+	
+	var _board = __webpack_require__(5);
+	
+	var _board2 = _interopRequireDefault(_board);
+	
+	var _hex = __webpack_require__(6);
+	
+	var _hex2 = _interopRequireDefault(_hex);
+	
+	var _direction = __webpack_require__(7);
+	
+	var Direction = _interopRequireWildcard(_direction);
+	
+	var _iterators = __webpack_require__(3);
+	
+	var Iterators = _interopRequireWildcard(_iterators);
+	
+	var _object = __webpack_require__(4);
+	
+	var ObjectUtils = _interopRequireWildcard(_object);
+	
+	var _vector = __webpack_require__(2);
+	
+	var _vector2 = _interopRequireDefault(_vector);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
 	var Shexy = exports.Shexy = {
 	    Curves: {
-	        Designer: __webpack_require__(2)
+	        Designer: _designer2.default
 	    },
 	    Models: {
-	        Board: __webpack_require__(6),
-	        Hex: __webpack_require__(7)
+	        Board: _board2.default,
+	        Hex: _hex2.default
 	    },
 	    Utils: {
-	        Direction: __webpack_require__(8),
-	        Vector: __webpack_require__(3),
-	        Iterators: __webpack_require__(4),
-	        Object: __webpack_require__(5)
+	        Direction: Direction,
+	        Vector: _vector2.default,
+	        Iterators: Iterators,
+	        ObjectUtils: ObjectUtils
 	    }
 	};
 
 /***/ },
-/* 2 */
+/* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -99,11 +115,11 @@ var Shexy =
 	});
 	exports.Designer = undefined;
 	
-	var _vector = __webpack_require__(3);
+	var _vector = __webpack_require__(2);
 	
-	var _iterators = __webpack_require__(4);
+	var _iterators = __webpack_require__(3);
 	
-	var _object = __webpack_require__(5);
+	var _object = __webpack_require__(4);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -168,7 +184,7 @@ var Shexy =
 	}();
 
 /***/ },
-/* 3 */
+/* 2 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -203,7 +219,7 @@ var Shexy =
 	}();
 
 /***/ },
-/* 4 */
+/* 3 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -261,7 +277,7 @@ var Shexy =
 	}
 
 /***/ },
-/* 5 */
+/* 4 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -310,7 +326,7 @@ var Shexy =
 	}
 
 /***/ },
-/* 6 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -322,11 +338,11 @@ var Shexy =
 	});
 	exports.Board = undefined;
 	
-	var _hex = __webpack_require__(7);
+	var _hex = __webpack_require__(6);
 	
-	var _direction = __webpack_require__(8);
+	var _direction = __webpack_require__(7);
 	
-	var _iterators = __webpack_require__(4);
+	var _iterators = __webpack_require__(3);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -397,7 +413,7 @@ var Shexy =
 	}();
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -409,7 +425,7 @@ var Shexy =
 	});
 	exports.Hex = undefined;
 	
-	var _direction = __webpack_require__(8);
+	var _direction = __webpack_require__(7);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -436,7 +452,7 @@ var Shexy =
 	}();
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports) {
 
 	"use strict";

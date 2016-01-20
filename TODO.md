@@ -14,7 +14,7 @@
 - [ ] Tests that require for lib and script import work in browser.
 - [ ] Modify issues / pull-request tags.
 - [ ] Extend CONTRIBUTING and add CODE_OF_CONDUCT.
-- [ ] Convert npm pre-publish hook to new version.
+- [ ] Convert npm pre-publish hook to new version ("prepublish": "npm build-lib && npm run lint && npm test && npm build-dist")
 - [ ] Add CI / build checker / pull-request checker (travis?).
 - [ ] Add Wiki.
 - [ ] Add proper tags.
