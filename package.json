@@ -25,6 +25,7 @@
   "scripts": {
     "watch": "webpack --watch",
     "test": "NODE_PATH=./src mocha test/**/*.js",
+    "cover": "NODE_PATH=./src istanbul cover _mocha test/**/*.js",
     "lint": "eslint src/**/*.js test/**/*.js --cache --max-warnings 0",
     "build": "webpack"
   },

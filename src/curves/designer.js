@@ -3,6 +3,8 @@ import { colRowMapIterator } from 'utils/iterators'
 import { deepMerge } from 'utils/object'
 
 const DEFAULT_HEX_OPTIONS = {
+    centerX: 0,
+    centerY: 0,
     radius: 20,
     scaleX: 1,
     scaleY: 1
@@ -28,8 +30,12 @@ export class Designer {
     static getHexVertices(options = {}) {
         options = Object.assign(DEFAULT_HEX_OPTIONS, options)
 
+        let xMultiplier = options.radius * options.scaleX
+        let yMultiplier = options.radius * options.scaleY
         return NORMALIZED_HEX_COORDINATES.map((vector) => {
-            return vector.multiplyXY(options.radius * options.scaleX, options.radius * options.scaleY)
+            return vector
+                .multiplyXY(xMultiplier, yMultiplier)
+                .addXY(options.centerX, options.centerY)
         })
     }
 
@@ -37,8 +43,8 @@ export class Designer {
         options = deepMerge({
             baseX: 0,
             baseY: 0,
-            padding: 0,
-            hex: DEFAULT_HEX_OPTIONS
+            hex: DEFAULT_HEX_OPTIONS,
+            padding: 0
         }, options)
 
         let xHexMultiplier = options.hex.radius * options.hex.scaleX

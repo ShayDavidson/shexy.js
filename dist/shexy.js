@@ -108,6 +108,8 @@ var Shexy =
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var DEFAULT_HEX_OPTIONS = {
+	    centerX: 0,
+	    centerY: 0,
 	    radius: 20,
 	    scaleX: 1,
 	    scaleY: 1
@@ -133,8 +135,10 @@ var Shexy =
 	
 	            options = _extends(DEFAULT_HEX_OPTIONS, options);
 	
+	            var xMultiplier = options.radius * options.scaleX;
+	            var yMultiplier = options.radius * options.scaleY;
 	            return NORMALIZED_HEX_COORDINATES.map(function (vector) {
-	                return vector.multiplyXY(options.radius * options.scaleX, options.radius * options.scaleY);
+	                return vector.multiplyXY(xMultiplier, yMultiplier).addXY(options.centerX, options.centerY);
 	            });
 	        }
 	    }, {
@@ -145,8 +149,8 @@ var Shexy =
 	            options = (0, _object.deepMerge)({
 	                baseX: 0,
 	                baseY: 0,
-	                padding: 0,
-	                hex: DEFAULT_HEX_OPTIONS
+	                hex: DEFAULT_HEX_OPTIONS,
+	                padding: 0
 	            }, options);
 	
 	            var xHexMultiplier = options.hex.radius * options.hex.scaleX;
@@ -193,6 +197,11 @@ var Shexy =
 	    }
 	
 	    _createClass(Vector, [{
+	        key: "addXY",
+	        value: function addXY(xAddition, yAddition) {
+	            return new Vector(this.x + xAddition, this.y + yAddition);
+	        }
+	    }, {
 	        key: "multiplyXY",
 	        value: function multiplyXY(xMultiplier, yMultiplier) {
 	            return new Vector(this.x * xMultiplier, this.y * yMultiplier);

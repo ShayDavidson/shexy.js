@@ -9,7 +9,7 @@
 - [ ] Board - first row starts high or low (also pass to designer)
 
 ## Library infrasturcture
-- [ ] Add test coverage (with threshold).
+- [ ] Add test coverage (with threshold) - https://github.com/ambitioninc/babel-istanbul
 - [ ] Add JSDoc.
 - [ ] Tests that require for lib and script import work in browser.
 - [ ] Modify issues / pull-request tags.

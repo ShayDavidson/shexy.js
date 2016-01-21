@@ -4,6 +4,10 @@ export class Vector {
         this.y = y
     }
 
+    addXY(xAddition, yAddition) {
+        return new Vector(this.x + xAddition, this.y + yAddition)
+    }
+
     multiplyXY(xMultiplier, yMultiplier) {
         return new Vector(this.x * xMultiplier, this.y * yMultiplier)
     }
