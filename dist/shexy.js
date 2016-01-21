@@ -227,6 +227,7 @@ var Shexy =
 	});
 	exports.colRowIterator = colRowIterator;
 	exports.colRowMapIterator = colRowMapIterator;
+	exports.matrixColRowIterator = matrixColRowIterator;
 	/**
 	* @callback rowColHandler
 	* @param {Integer} col The current column in the iteration step.
@@ -272,6 +273,14 @@ var Shexy =
 	        matrix[col][row] = mapFunction(col, row);
 	    });
 	    return matrix;
+	}
+	
+	function matrixColRowIterator(matrix, handler) {
+	    for (var col = 0; col < matrix.length; col++) {
+	        for (var row = 0; row < matrix[col].length; row++) {
+	            handler(matrix[col][row], col, row);
+	        }
+	    }
 	}
 
 /***/ },

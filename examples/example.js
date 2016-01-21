@@ -15,8 +15,7 @@
        }
     })
 
-    Shexy.Iterators.colRowIterator(rows, cols, function(row, col) {
-        var coord =  coords[row][col];
+    Shexy.Iterators.matrixColRowIterator(coords, function(coord) {
         var poly = Shexy.Designer.getHexVertices({
             radius: radius,
             scaleX: scaleX,

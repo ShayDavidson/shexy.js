@@ -44,3 +44,11 @@ export function colRowMapIterator(cols, rows, mapFunction) {
     })
     return matrix
 }
+
+export function matrixColRowIterator(matrix, handler) {
+    for (let col = 0; col < matrix.length; col++) {
+        for (let row = 0; row < matrix[col].length; row++) {
+            handler(matrix[col][row], col, row)
+        }
+    }
+}
