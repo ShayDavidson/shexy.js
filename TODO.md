@@ -1,17 +1,15 @@
 ## Features
 
-- [ ] Add object utils (deep merge).
 - [ ] Add iterator method for array.
 - [ ] Convert hex designer to class.
 - [ ] Add get hex at pixel method to designer (with offset + zoom).
-- [ ] Designer tests.
 - [ ] Get rotate hex coordinates from hex options (also pass to designer)
 - [ ] Board - first row starts high or low (also pass to designer)
 
 ## Library infrasturcture
-- [ ] Add test coverage (with threshold) - https://github.com/ambitioninc/babel-istanbul
+- [ ] Add test coverage (with threshold). https://github.com/ambitioninc/babel-istanbul
 - [ ] Add JSDoc.
-- [ ] Tests that require for lib and script import work in browser.
+- [ ] Proper lib (npm/ requireJS/ commonJS/ AMD/ browser).
 - [ ] Modify issues / pull-request tags.
 - [ ] Extend CONTRIBUTING and add CODE_OF_CONDUCT.
 - [ ] Convert npm pre-publish hook to new version ("prepublish": "npm build-lib && npm run lint && npm test && npm build-dist")

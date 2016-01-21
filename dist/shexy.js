@@ -57,6 +57,10 @@ var Shexy =
 	
 	var _hex = __webpack_require__(6);
 	
+	var _canvas = __webpack_require__(8);
+	
+	var CanvasUtils = _interopRequireWildcard(_canvas);
+	
 	var _direction = __webpack_require__(7);
 	
 	var Direction = _interopRequireWildcard(_direction);
@@ -80,6 +84,7 @@ var Shexy =
 	    Direction: Direction,
 	    Iterators: Iterators,
 	    ObjectUtils: ObjectUtils,
+	    CanvasUtils: CanvasUtils,
 	    Vector: _vector.Vector
 	};
 	module.exports = exports['default'];
@@ -465,6 +470,33 @@ var Shexy =
 	
 	function getOpposite(dir) {
 	    return (dir + 3) % 6;
+	}
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.drawPolygon = drawPolygon;
+	function drawPolygon(ctx, vertices, options) {
+	    ctx.beginPath();
+	    ctx.moveTo(vertices[0].x, vertices[0].y);
+	    for (var i = 1; i < vertices.length; i++) {
+	        ctx.lineTo(vertices[i].x, vertices[i].y);
+	    }
+	    ctx.lineTo(vertices[0].x, vertices[0].y);
+	
+	    if (options.fillStyle) {
+	        ctx.fillStyle = options.fillStyle;
+	        ctx.fill();
+	    }
+	    ctx.lineWidth = options.strokeWidth || 1;
+	    ctx.strokeStyle = options.strokeStyle || 'black';
+	    ctx.stroke();
 	}
 
 /***/ }
