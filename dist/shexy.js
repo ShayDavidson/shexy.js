@@ -53,11 +53,15 @@ var Shexy =
 	
 	var _designer = __webpack_require__(1);
 	
+	var Designer = _interopRequireWildcard(_designer);
+	
 	var _board = __webpack_require__(5);
 	
 	var _hex = __webpack_require__(6);
 	
-	var _canvas = __webpack_require__(8);
+	var _col_row = __webpack_require__(8);
+	
+	var _canvas = __webpack_require__(9);
 	
 	var CanvasUtils = _interopRequireWildcard(_canvas);
 	
@@ -78,13 +82,14 @@ var Shexy =
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	exports.default = {
-	    Designer: _designer.Designer,
+	    Designer: Designer,
 	    Board: _board.Board,
 	    Hex: _hex.Hex,
+	    CanvasUtils: CanvasUtils,
+	    ColRow: _col_row.ColRow,
 	    Direction: Direction,
 	    Iterators: Iterators,
 	    ObjectUtils: ObjectUtils,
-	    CanvasUtils: CanvasUtils,
 	    Vector: _vector.Vector
 	};
 	module.exports = exports['default'];
@@ -95,22 +100,20 @@ var Shexy =
 
 	'use strict';
 	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.Designer = undefined;
+	exports.getHexVertices = getHexVertices;
+	exports.getBoardHexCenters = getBoardHexCenters;
+	exports.getColRowFromPosition = getColRowFromPosition;
 	
 	var _vector = __webpack_require__(2);
+	
+	var _col_row = __webpack_require__(8);
 	
 	var _iterators = __webpack_require__(3);
 	
 	var _object = __webpack_require__(4);
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var DEFAULT_HEX_OPTIONS = {
 	    centerX: 0,
@@ -118,6 +121,13 @@ var Shexy =
 	    radius: 20,
 	    scaleX: 1,
 	    scaleY: 1
+	};
+	
+	var DEFAULT_BOARD_OPTIONS = {
+	    baseX: 0,
+	    baseY: 0,
+	    hex: DEFAULT_HEX_OPTIONS,
+	    padding: 0
 	};
 	
 	/**
@@ -128,53 +138,54 @@ var Shexy =
 	
 	var NORMALIZED_HEX_COORDINATES = [new _vector.Vector(-0.5, -HEX_RATIO), new _vector.Vector(0.5, -HEX_RATIO), new _vector.Vector(1, 0), new _vector.Vector(0.5, HEX_RATIO), new _vector.Vector(-0.5, HEX_RATIO), new _vector.Vector(-1, 0)];
 	
-	var Designer = exports.Designer = function () {
-	    function Designer() {
-	        _classCallCheck(this, Designer);
-	    }
+	function getHexVertices() {
+	    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	    _createClass(Designer, null, [{
-	        key: 'getHexVertices',
-	        value: function getHexVertices() {
-	            var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    options = (0, _object.deepMerge)(DEFAULT_HEX_OPTIONS, options);
 	
-	            options = _extends(DEFAULT_HEX_OPTIONS, options);
+	    var xMultiplier = options.radius * options.scaleX;
+	    var yMultiplier = options.radius * options.scaleY;
+	    return NORMALIZED_HEX_COORDINATES.map(function (vector) {
+	        return vector.multiplyXY(xMultiplier, yMultiplier).addXY(options.centerX, options.centerY);
+	    });
+	}
 	
-	            var xMultiplier = options.radius * options.scaleX;
-	            var yMultiplier = options.radius * options.scaleY;
-	            return NORMALIZED_HEX_COORDINATES.map(function (vector) {
-	                return vector.multiplyXY(xMultiplier, yMultiplier).addXY(options.centerX, options.centerY);
-	            });
-	        }
-	    }, {
-	        key: 'getBoardHexCenters',
-	        value: function getBoardHexCenters(cols, rows) {
-	            var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	function getBoardHexCenters(cols, rows) {
+	    var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 	
-	            options = (0, _object.deepMerge)({
-	                baseX: 0,
-	                baseY: 0,
-	                hex: DEFAULT_HEX_OPTIONS,
-	                padding: 0
-	            }, options);
+	    options = (0, _object.deepMerge)(DEFAULT_BOARD_OPTIONS, options);
 	
-	            var xHexMultiplier = options.hex.radius * options.hex.scaleX;
-	            var yHexMultiplier = options.hex.radius * HEX_RATIO * options.hex.scaleY;
+	    var xHexMultiplier = options.hex.radius * options.hex.scaleX;
+	    var yHexMultiplier = options.hex.radius * HEX_RATIO * options.hex.scaleY;
 	
-	            return (0, _iterators.colRowMapIterator)(cols, rows, function (col, row) {
-	                var hexX = xHexMultiplier * (1 + 1.5 * col);
-	                var hexY = yHexMultiplier * (1 + col % 2 + 2 * row);
-	                var paddingX = options.padding * (col + 1);
-	                var paddingY = options.padding * (row + 1 + col % 2 * 0.5);
-	                var centerX = options.baseX + hexX + paddingX;
-	                var centerY = options.baseY + hexY + paddingY;
-	                return new _vector.Vector(centerX, centerY);
-	            });
-	        }
-	    }]);
+	    return (0, _iterators.colRowMapIterator)(cols, rows, function (col, row) {
+	        var hexX = xHexMultiplier * (1 + 1.5 * col);
+	        var hexY = yHexMultiplier * (1 + col % 2 + 2 * row);
+	        var paddingX = options.padding * (col + 1);
+	        var paddingY = options.padding * (row + 1 + col % 2 * 0.5);
+	        var centerX = options.baseX + hexX + paddingX;
+	        var centerY = options.baseY + hexY + paddingY;
+	        return new _vector.Vector(centerX, centerY);
+	    });
+	}
 	
-	    return Designer;
-	}();
+	function getColRowFromPosition(x, y) {
+	    var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	
+	    options = (0, _object.deepMerge)(DEFAULT_BOARD_OPTIONS, options);
+	
+	    var xHexMultiplier = options.hex.radius * options.hex.scaleX;
+	    var colNumerator = x - options.baseX - options.padding - xHexMultiplier;
+	    var colDenumerator = 1.5 * xHexMultiplier + options.padding;
+	    var col = Math.round(colNumerator / colDenumerator);
+	
+	    var yHexMultiplier = options.hex.radius * HEX_RATIO * options.hex.scaleY;
+	    var rowNumerator = y - options.baseX - yHexMultiplier * (1 + col % 2) - options.padding * (1 + col % 2 * 0.5);
+	    var rowDenumerator = 2 * yHexMultiplier + options.padding;
+	    var row = Math.round(rowNumerator / rowDenumerator);
+	
+	    return new _col_row.ColRow(col, row);
+	}
 
 /***/ },
 /* 2 */
@@ -483,6 +494,25 @@ var Shexy =
 
 /***/ },
 /* 8 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var ColRow = exports.ColRow = function ColRow(col, row) {
+	    _classCallCheck(this, ColRow);
+	
+	    this.col = col;
+	    this.row = row;
+	};
+
+/***/ },
+/* 9 */
 /***/ function(module, exports) {
 
 	'use strict';

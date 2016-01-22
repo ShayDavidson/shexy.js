@@ -1,6 +1,7 @@
-import { Designer } from 'curves/designer'
+import * as Designer from 'curves/designer'
 import { Board } from 'models/board'
 import { Hex } from 'models/hex'
+import { ColRow } from 'utils/col_row'
 import * as CanvasUtils from 'utils/canvas'
 import * as Direction from 'utils/direction'
 import * as Iterators from 'utils/iterators'
@@ -11,9 +12,10 @@ export default {
     Designer: Designer,
     Board: Board,
     Hex: Hex,
+    CanvasUtils: CanvasUtils,
+    ColRow: ColRow,
     Direction: Direction,
     Iterators: Iterators,
     ObjectUtils: ObjectUtils,
-    CanvasUtils: CanvasUtils,
     Vector: Vector
 }
