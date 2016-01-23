@@ -25,7 +25,6 @@
   "scripts": {
     "watch": "webpack --watch",
     "test": "NODE_PATH=./src mocha test/**/*.js",
-    "cover": "NODE_PATH=./src istanbul cover _mocha test/**/*.js",
     "lint": "eslint src/**/*.js test/**/*.js --cache --max-warnings 0",
     "build": "webpack"
   },
@@ -39,7 +38,6 @@
     "babel-register": "^6.4.3",
     "chai": "^3.4.1",
     "eslint": "^1.10.3",
-    "istanbul": "^0.4.0",
     "jsdoc": "^3.4.0",
     "jshint": "^2.9.1-rc1",
     "mocha": "^2.3.4",

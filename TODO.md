@@ -8,7 +8,7 @@
 - [ ] Optimize version for hex in position (only inner circle)
 
 ## Library infrasturcture
-- [ ] Add test coverage (with threshold). https://github.com/ambitioninc/babel-istanbul
+- [ ] Add test coverage (with threshold) - make it work in ES6. https://github.com/ambitioninc/babel-istanbul
 - [ ] Add JSDoc.
 - [ ] Proper lib (npm/ requireJS/ commonJS/ AMD/ browser).
 - [ ] Modify issues / pull-request tags.
