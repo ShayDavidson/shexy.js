@@ -5,6 +5,7 @@
 - [ ] Add get hex at pixel method to designer (with offset + zoom).
 - [ ] Get rotate hex coordinates from hex options (also pass to designer)
 - [ ] Board - first row starts high or low (also pass to designer)
+- [ ] Optimize version for hex in position (only inner circle)
 
 ## Library infrasturcture
 - [ ] Add test coverage (with threshold). https://github.com/ambitioninc/babel-istanbul

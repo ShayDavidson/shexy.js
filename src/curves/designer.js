@@ -45,20 +45,24 @@ export function getHexVertices(options = {}) {
     })
 }
 
-export function getBoardHexCenters(cols, rows, options = {}) {
+export function getHexCenter(col, row, options = {}) {
     options = deepMerge(DEFAULT_BOARD_OPTIONS, options)
 
     let xHexMultiplier = options.hex.radius * options.hex.scaleX
     let yHexMultiplier = options.hex.radius * HEX_RATIO * options.hex.scaleY
 
+    let hexX = xHexMultiplier * (1 + (1.5 * col))
+    let hexY = yHexMultiplier * (1 + (col % 2) + (2 * row))
+    let paddingX = options.padding * (col + 1)
+    let paddingY = options.padding * (row + 1 + ((col % 2) * 0.5))
+    let centerX = options.baseX + hexX + paddingX
+    let centerY = options.baseY + hexY + paddingY
+    return new Vector(centerX, centerY)
+}
+
+export function getBoardHexCenters(cols, rows, options = {}) {
     return colRowMapIterator(cols, rows, (col, row) => {
-        let hexX = xHexMultiplier * (1 + (1.5 * col))
-        let hexY = yHexMultiplier * (1 + (col % 2) + (2 * row))
-        let paddingX = options.padding * (col + 1)
-        let paddingY = options.padding * (row + 1 + ((col % 2) * 0.5))
-        let centerX = options.baseX + hexX + paddingX
-        let centerY = options.baseY + hexY + paddingY
-        return new Vector(centerX, centerY)
+        return getHexCenter(col, row, options)
     })
 }
 
@@ -75,5 +79,13 @@ export function getColRowFromPosition(x, y, options = {}) {
     let rowDenumerator = 2 * yHexMultiplier + options.padding
     let row = Math.round(rowNumerator / rowDenumerator)
 
-    return new ColRow(col, row)
+    let inscribedRadiusSqr = yHexMultiplier * yHexMultiplier
+    let center = getHexCenter(col, row, options)
+    // check if inside inscribed circle first
+    if (center.distSqr(new Vector(x, y)) <= inscribedRadiusSqr) {
+        return new ColRow(col, row)
+    } else {
+        return null
+    }
+
 }

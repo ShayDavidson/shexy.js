@@ -55,25 +55,25 @@ var Shexy =
 	
 	var Designer = _interopRequireWildcard(_designer);
 	
-	var _board = __webpack_require__(5);
+	var _board = __webpack_require__(6);
 	
-	var _hex = __webpack_require__(6);
+	var _hex = __webpack_require__(7);
 	
-	var _col_row = __webpack_require__(8);
+	var _col_row = __webpack_require__(3);
 	
 	var _canvas = __webpack_require__(9);
 	
 	var CanvasUtils = _interopRequireWildcard(_canvas);
 	
-	var _direction = __webpack_require__(7);
+	var _direction = __webpack_require__(8);
 	
 	var Direction = _interopRequireWildcard(_direction);
 	
-	var _iterators = __webpack_require__(3);
+	var _iterators = __webpack_require__(4);
 	
 	var Iterators = _interopRequireWildcard(_iterators);
 	
-	var _object = __webpack_require__(4);
+	var _object = __webpack_require__(5);
 	
 	var ObjectUtils = _interopRequireWildcard(_object);
 	
@@ -104,16 +104,17 @@ var Shexy =
 	    value: true
 	});
 	exports.getHexVertices = getHexVertices;
+	exports.getHexCenter = getHexCenter;
 	exports.getBoardHexCenters = getBoardHexCenters;
 	exports.getColRowFromPosition = getColRowFromPosition;
 	
 	var _vector = __webpack_require__(2);
 	
-	var _col_row = __webpack_require__(8);
+	var _col_row = __webpack_require__(3);
 	
-	var _iterators = __webpack_require__(3);
+	var _iterators = __webpack_require__(4);
 	
-	var _object = __webpack_require__(4);
+	var _object = __webpack_require__(5);
 	
 	var DEFAULT_HEX_OPTIONS = {
 	    centerX: 0,
@@ -150,7 +151,7 @@ var Shexy =
 	    });
 	}
 	
-	function getBoardHexCenters(cols, rows) {
+	function getHexCenter(col, row) {
 	    var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 	
 	    options = (0, _object.deepMerge)(DEFAULT_BOARD_OPTIONS, options);
@@ -158,14 +159,20 @@ var Shexy =
 	    var xHexMultiplier = options.hex.radius * options.hex.scaleX;
 	    var yHexMultiplier = options.hex.radius * HEX_RATIO * options.hex.scaleY;
 	
+	    var hexX = xHexMultiplier * (1 + 1.5 * col);
+	    var hexY = yHexMultiplier * (1 + col % 2 + 2 * row);
+	    var paddingX = options.padding * (col + 1);
+	    var paddingY = options.padding * (row + 1 + col % 2 * 0.5);
+	    var centerX = options.baseX + hexX + paddingX;
+	    var centerY = options.baseY + hexY + paddingY;
+	    return new _vector.Vector(centerX, centerY);
+	}
+	
+	function getBoardHexCenters(cols, rows) {
+	    var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	
 	    return (0, _iterators.colRowMapIterator)(cols, rows, function (col, row) {
-	        var hexX = xHexMultiplier * (1 + 1.5 * col);
-	        var hexY = yHexMultiplier * (1 + col % 2 + 2 * row);
-	        var paddingX = options.padding * (col + 1);
-	        var paddingY = options.padding * (row + 1 + col % 2 * 0.5);
-	        var centerX = options.baseX + hexX + paddingX;
-	        var centerY = options.baseY + hexY + paddingY;
-	        return new _vector.Vector(centerX, centerY);
+	        return getHexCenter(col, row, options);
 	    });
 	}
 	
@@ -184,7 +191,14 @@ var Shexy =
 	    var rowDenumerator = 2 * yHexMultiplier + options.padding;
 	    var row = Math.round(rowNumerator / rowDenumerator);
 	
-	    return new _col_row.ColRow(col, row);
+	    var inscribedRadiusSqr = yHexMultiplier * yHexMultiplier;
+	    var center = getHexCenter(col, row, options);
+	    // check if inside inscribed circle first
+	    if (center.distSqr(new _vector.Vector(x, y)) <= inscribedRadiusSqr) {
+	        return new _col_row.ColRow(col, row);
+	    } else {
+	        return null;
+	    }
 	}
 
 /***/ },
@@ -213,6 +227,18 @@ var Shexy =
 	    }
 	
 	    _createClass(Vector, [{
+	        key: "distSqr",
+	        value: function distSqr(vector) {
+	            var xDiff = this.x - vector.x;
+	            var yDiff = this.y - vector.y;
+	            return xDiff * xDiff + yDiff * yDiff;
+	        }
+	    }, {
+	        key: "dist",
+	        value: function dist(vector) {
+	            return Math.sqrt(this.distSqr(vector));
+	        }
+	    }, {
 	        key: "addXY",
 	        value: function addXY(xAddition, yAddition) {
 	            return new Vector(this.x + xAddition, this.y + yAddition);
@@ -229,6 +255,25 @@ var Shexy =
 
 /***/ },
 /* 3 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var ColRow = exports.ColRow = function ColRow(col, row) {
+	    _classCallCheck(this, ColRow);
+	
+	    this.col = col;
+	    this.row = row;
+	};
+
+/***/ },
+/* 4 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -295,7 +340,7 @@ var Shexy =
 	}
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -344,7 +389,7 @@ var Shexy =
 	}
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -356,11 +401,11 @@ var Shexy =
 	});
 	exports.Board = undefined;
 	
-	var _hex = __webpack_require__(6);
+	var _hex = __webpack_require__(7);
 	
-	var _direction = __webpack_require__(7);
+	var _direction = __webpack_require__(8);
 	
-	var _iterators = __webpack_require__(3);
+	var _iterators = __webpack_require__(4);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -431,7 +476,7 @@ var Shexy =
 	}();
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -443,7 +488,7 @@ var Shexy =
 	});
 	exports.Hex = undefined;
 	
-	var _direction = __webpack_require__(7);
+	var _direction = __webpack_require__(8);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -470,7 +515,7 @@ var Shexy =
 	}();
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -491,25 +536,6 @@ var Shexy =
 	function getOpposite(dir) {
 	    return (dir + 3) % 6;
 	}
-
-/***/ },
-/* 8 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var ColRow = exports.ColRow = function ColRow(col, row) {
-	    _classCallCheck(this, ColRow);
-	
-	    this.col = col;
-	    this.row = row;
-	};
 
 /***/ },
 /* 9 */
