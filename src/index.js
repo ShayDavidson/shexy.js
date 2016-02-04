@@ -5,7 +5,6 @@ import { ColRow } from 'utils/col_row'
 import * as CanvasUtils from 'utils/canvas'
 import * as Direction from 'utils/direction'
 import * as Iterators from 'utils/iterators'
-import * as ObjectUtils from 'utils/object'
 import { Vector } from 'utils/vector'
 
 export default {
@@ -16,6 +15,5 @@ export default {
     ColRow: ColRow,
     Direction: Direction,
     Iterators: Iterators,
-    ObjectUtils: ObjectUtils,
     Vector: Vector
 }

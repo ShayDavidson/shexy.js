@@ -55,27 +55,23 @@ var Shexy =
 	
 	var Designer = _interopRequireWildcard(_designer);
 	
-	var _board = __webpack_require__(6);
+	var _board = __webpack_require__(5);
 	
-	var _hex = __webpack_require__(7);
+	var _hex = __webpack_require__(6);
 	
 	var _col_row = __webpack_require__(3);
 	
-	var _canvas = __webpack_require__(9);
+	var _canvas = __webpack_require__(8);
 	
 	var CanvasUtils = _interopRequireWildcard(_canvas);
 	
-	var _direction = __webpack_require__(8);
+	var _direction = __webpack_require__(7);
 	
 	var Direction = _interopRequireWildcard(_direction);
 	
 	var _iterators = __webpack_require__(4);
 	
 	var Iterators = _interopRequireWildcard(_iterators);
-	
-	var _object = __webpack_require__(5);
-	
-	var ObjectUtils = _interopRequireWildcard(_object);
 	
 	var _vector = __webpack_require__(2);
 	
@@ -89,7 +85,6 @@ var Shexy =
 	    ColRow: _col_row.ColRow,
 	    Direction: Direction,
 	    Iterators: Iterators,
-	    ObjectUtils: ObjectUtils,
 	    Vector: _vector.Vector
 	};
 	module.exports = exports['default'];
@@ -106,6 +101,7 @@ var Shexy =
 	exports.getHexVertices = getHexVertices;
 	exports.getHexCenter = getHexCenter;
 	exports.getBoardHexCenters = getBoardHexCenters;
+	exports.isInsideHex = isInsideHex;
 	exports.getColRowFromPosition = getColRowFromPosition;
 	
 	var _vector = __webpack_require__(2);
@@ -113,23 +109,6 @@ var Shexy =
 	var _col_row = __webpack_require__(3);
 	
 	var _iterators = __webpack_require__(4);
-	
-	var _object = __webpack_require__(5);
-	
-	var DEFAULT_HEX_OPTIONS = {
-	    centerX: 0,
-	    centerY: 0,
-	    radius: 20,
-	    scaleX: 1,
-	    scaleY: 1
-	};
-	
-	var DEFAULT_BOARD_OPTIONS = {
-	    baseX: 0,
-	    baseY: 0,
-	    hex: DEFAULT_HEX_OPTIONS,
-	    padding: 0
-	};
 	
 	/**
 	* The ratio between half the height of the hex to its radius,
@@ -139,62 +118,105 @@ var Shexy =
 	
 	var NORMALIZED_HEX_COORDINATES = [new _vector.Vector(-0.5, -HEX_RATIO), new _vector.Vector(0.5, -HEX_RATIO), new _vector.Vector(1, 0), new _vector.Vector(0.5, HEX_RATIO), new _vector.Vector(-0.5, HEX_RATIO), new _vector.Vector(-1, 0)];
 	
-	function getHexVertices() {
-	    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	function getHexVertices(_ref) {
+	    var _ref$centerX = _ref.centerX;
+	    var centerX = _ref$centerX === undefined ? 0 : _ref$centerX;
+	    var _ref$centerY = _ref.centerY;
+	    var centerY = _ref$centerY === undefined ? 0 : _ref$centerY;
+	    var _ref$scaleX = _ref.scaleX;
+	    var scaleX = _ref$scaleX === undefined ? 1 : _ref$scaleX;
+	    var _ref$scaleY = _ref.scaleY;
+	    var scaleY = _ref$scaleY === undefined ? 1 : _ref$scaleY;
+	    var _ref$radius = _ref.radius;
+	    var radius = _ref$radius === undefined ? 10 : _ref$radius;
 	
-	    options = (0, _object.deepMerge)(DEFAULT_HEX_OPTIONS, options);
+	    var xMultiplier = radius * scaleX;
+	    var yMultiplier = radius * scaleY;
 	
-	    var xMultiplier = options.radius * options.scaleX;
-	    var yMultiplier = options.radius * options.scaleY;
 	    return NORMALIZED_HEX_COORDINATES.map(function (vector) {
-	        return vector.multiplyXY(xMultiplier, yMultiplier).addXY(options.centerX, options.centerY);
+	        return vector.multiplyXY(xMultiplier, yMultiplier).addXY(centerX, centerY);
 	    });
 	}
 	
-	function getHexCenter(col, row) {
-	    var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	function getHexCenter(col, row, _ref2) {
+	    var _ref2$boardX = _ref2.boardX;
+	    var boardX = _ref2$boardX === undefined ? 0 : _ref2$boardX;
+	    var _ref2$boardY = _ref2.boardY;
+	    var boardY = _ref2$boardY === undefined ? 0 : _ref2$boardY;
+	    var _ref2$scaleX = _ref2.scaleX;
+	    var scaleX = _ref2$scaleX === undefined ? 1 : _ref2$scaleX;
+	    var _ref2$scaleY = _ref2.scaleY;
+	    var scaleY = _ref2$scaleY === undefined ? 1 : _ref2$scaleY;
+	    var _ref2$radius = _ref2.radius;
+	    var radius = _ref2$radius === undefined ? 10 : _ref2$radius;
+	    var _ref2$padding = _ref2.padding;
+	    var padding = _ref2$padding === undefined ? 0 : _ref2$padding;
 	
-	    options = (0, _object.deepMerge)(DEFAULT_BOARD_OPTIONS, options);
-	
-	    var xHexMultiplier = options.hex.radius * options.hex.scaleX;
-	    var yHexMultiplier = options.hex.radius * HEX_RATIO * options.hex.scaleY;
+	    var xHexMultiplier = radius * scaleX;
+	    var yHexMultiplier = HEX_RATIO * radius * scaleY;
 	
 	    var hexX = xHexMultiplier * (1 + 1.5 * col);
 	    var hexY = yHexMultiplier * (1 + col % 2 + 2 * row);
-	    var paddingX = options.padding * (col + 1);
-	    var paddingY = options.padding * (row + 1 + col % 2 * 0.5);
-	    var centerX = options.baseX + hexX + paddingX;
-	    var centerY = options.baseY + hexY + paddingY;
+	    var paddingX = padding * (col + 1);
+	    var paddingY = padding * (row + 1 + col % 2 * 0.5);
+	    var centerX = boardX + hexX + paddingX;
+	    var centerY = boardY + hexY + paddingY;
 	    return new _vector.Vector(centerX, centerY);
 	}
 	
-	function getBoardHexCenters(cols, rows) {
-	    var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-	
+	function getBoardHexCenters(cols, rows, options) {
 	    return (0, _iterators.colRowMapIterator)(cols, rows, function (col, row) {
 	        return getHexCenter(col, row, options);
 	    });
 	}
 	
-	function getColRowFromPosition(x, y) {
-	    var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	function isInsideHex(x, y, _ref3) {
+	    var _ref3$centerX = _ref3.centerX;
+	    var centerX = _ref3$centerX === undefined ? 0 : _ref3$centerX;
+	    var _ref3$centerY = _ref3.centerY;
+	    var centerY = _ref3$centerY === undefined ? 0 : _ref3$centerY;
+	    var _ref3$scaleX = _ref3.scaleX;
+	    var scaleX = _ref3$scaleX === undefined ? 1 : _ref3$scaleX;
+	    var _ref3$scaleY = _ref3.scaleY;
+	    var scaleY = _ref3$scaleY === undefined ? 1 : _ref3$scaleY;
+	    var _ref3$radius = _ref3.radius;
+	    var radius = _ref3$radius === undefined ? 10 : _ref3$radius;
+	    var _ref3$optimized = _ref3.optimized;
+	    var optimized = _ref3$optimized === undefined ? true : _ref3$optimized;
+	}
 	
-	    options = (0, _object.deepMerge)(DEFAULT_BOARD_OPTIONS, options);
+	function getColRowFromPosition(x, y, _ref4) {
+	    var _ref4$boardX = _ref4.boardX;
+	    var boardX = _ref4$boardX === undefined ? 0 : _ref4$boardX;
+	    var _ref4$boardY = _ref4.boardY;
+	    var boardY = _ref4$boardY === undefined ? 0 : _ref4$boardY;
+	    var _ref4$scaleX = _ref4.scaleX;
+	    var scaleX = _ref4$scaleX === undefined ? 1 : _ref4$scaleX;
+	    var _ref4$scaleY = _ref4.scaleY;
+	    var scaleY = _ref4$scaleY === undefined ? 1 : _ref4$scaleY;
+	    var _ref4$radius = _ref4.radius;
+	    var radius = _ref4$radius === undefined ? 10 : _ref4$radius;
+	    var _ref4$padding = _ref4.padding;
+	    var padding = _ref4$padding === undefined ? 0 : _ref4$padding;
+	    var _ref4$optimized = _ref4.optimized;
+	    var optimized = _ref4$optimized === undefined ? true : _ref4$optimized;
 	
-	    var xHexMultiplier = options.hex.radius * options.hex.scaleX;
-	    var colNumerator = x - options.baseX - options.padding - xHexMultiplier;
-	    var colDenumerator = 1.5 * xHexMultiplier + options.padding;
+	    var xHexMultiplier = radius * scaleX;
+	    var colNumerator = x - boardX - padding - xHexMultiplier;
+	    var colDenumerator = 1.5 * xHexMultiplier + padding;
 	    var col = Math.round(colNumerator / colDenumerator);
 	
-	    var yHexMultiplier = options.hex.radius * HEX_RATIO * options.hex.scaleY;
-	    var rowNumerator = y - options.baseX - yHexMultiplier * (1 + col % 2) - options.padding * (1 + col % 2 * 0.5);
-	    var rowDenumerator = 2 * yHexMultiplier + options.padding;
+	    var yHexMultiplier = HEX_RATIO * radius * scaleY;
+	    var rowNumerator = y - boardY - yHexMultiplier * (1 + col % 2) - padding * (1 + col % 2 * 0.5);
+	    var rowDenumerator = 2 * yHexMultiplier + padding;
 	    var row = Math.round(rowNumerator / rowDenumerator);
 	
 	    var inscribedRadiusSqr = yHexMultiplier * yHexMultiplier;
+	    var options = arguments[2];
 	    var center = getHexCenter(col, row, options);
+	
 	    // check if inside inscribed circle first
-	    if (center.distSqr(new _vector.Vector(x, y)) <= inscribedRadiusSqr) {
+	    if (optimized && center.distSqr(new _vector.Vector(x, y)) <= inscribedRadiusSqr) {
 	        return new _col_row.ColRow(col, row);
 	    } else {
 	        return null;
@@ -341,55 +363,6 @@ var Shexy =
 
 /***/ },
 /* 5 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.isObject = isObject;
-	exports.deepMerge = deepMerge;
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
-	/**
-	 * Simple is object check.
-	 * @param {*} item The value to check if it's an object or not.
-	 * @returns {Boolean} True if the given value is an object.
-	 */
-	function isObject(item) {
-	    return item && (typeof item === 'undefined' ? 'undefined' : _typeof(item)) === 'object' && !Array.isArray(item) && item !== null;
-	}
-	
-	/**
-	 * Deep merge two objects.
-	 * @param {Object} target target object.
-	 * @param {Object} source source object.
-	 * @returns {Object} Deep merged object (source into target).
-	 */
-	function deepMerge(target, source) {
-	    if (isObject(target) && isObject(source)) {
-	        Object.keys(source).forEach(function (key) {
-	            if (isObject(source[key])) {
-	                if (!target[key]) {
-	                    _extends(target, _defineProperty({}, key, {}));
-	                }
-	                deepMerge(target[key], source[key]);
-	            } else {
-	                _extends(target, _defineProperty({}, key, source[key]));
-	            }
-	        });
-	    }
-	    return target;
-	}
-
-/***/ },
-/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -401,9 +374,9 @@ var Shexy =
 	});
 	exports.Board = undefined;
 	
-	var _hex = __webpack_require__(7);
+	var _hex = __webpack_require__(6);
 	
-	var _direction = __webpack_require__(8);
+	var _direction = __webpack_require__(7);
 	
 	var _iterators = __webpack_require__(4);
 	
@@ -476,7 +449,7 @@ var Shexy =
 	}();
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -488,7 +461,7 @@ var Shexy =
 	});
 	exports.Hex = undefined;
 	
-	var _direction = __webpack_require__(8);
+	var _direction = __webpack_require__(7);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -515,7 +488,7 @@ var Shexy =
 	}();
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -538,10 +511,10 @@ var Shexy =
 	}
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -550,6 +523,7 @@ var Shexy =
 	function drawPolygon(ctx, vertices, options) {
 	    ctx.beginPath();
 	    ctx.moveTo(vertices[0].x, vertices[0].y);
+	
 	    for (var i = 1; i < vertices.length; i++) {
 	        ctx.lineTo(vertices[i].x, vertices[i].y);
 	    }
@@ -559,9 +533,12 @@ var Shexy =
 	        ctx.fillStyle = options.fillStyle;
 	        ctx.fill();
 	    }
-	    ctx.lineWidth = options.strokeWidth || 1;
-	    ctx.strokeStyle = options.strokeStyle || 'black';
-	    ctx.stroke();
+	
+	    if (options.strokeStyle) {
+	        ctx.lineWidth = options.strokeWidth || 1;
+	        ctx.strokeStyle = options.strokeStyle;
+	        ctx.stroke();
+	    }
 	}
 
 /***/ }

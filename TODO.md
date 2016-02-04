@@ -1,11 +1,12 @@
 ## Features
 
+- [ ] Solve defaults options.
 - [ ] Add iterator method for array.
 - [ ] Convert hex designer to class.
 - [ ] Add get hex at pixel method to designer (with offset + zoom).
 - [ ] Get rotate hex coordinates from hex options (also pass to designer)
 - [ ] Board - first row starts high or low (also pass to designer)
-- [ ] Optimize version for hex in position (only inner circle)
+- [ ] Non-Optimized version for hex in position
 
 ## Library infrasturcture
 - [ ] Add test coverage (with threshold) - make it work in ES6. https://github.com/ambitioninc/babel-istanbul

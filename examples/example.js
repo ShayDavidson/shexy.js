@@ -1,20 +1,18 @@
 (function() {
     var ctx = document.getElementById('canvas').getContext('2d');
 
-    var cols = 7;
-    var rows = 7;
+    var cols = 14;
+    var rows = 14;
     var scaleX = 1;
     var scaleY = 1;
-    var radius = 30;
+    var radius = 13;
     var padding = 10;
 
     var options = {
        padding: padding,
-       hex: {
-           scaleX: scaleX,
-           scaleY: scaleY,
-           radius: radius
-       }
+       scaleX: scaleX,
+       scaleY: scaleY,
+       radius: radius
     };
 
     var current;
@@ -37,7 +35,7 @@
             } else {
                 color = 'red'
             }
-            Shexy.CanvasUtils.drawPolygon(ctx, poly, {fillStyle: color, strokeWidth: 1});
+            Shexy.CanvasUtils.drawPolygon(ctx, poly, {fillStyle: color});
         });
     }
 
