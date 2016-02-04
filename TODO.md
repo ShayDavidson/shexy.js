@@ -1,6 +1,5 @@
 ## Features
 
-- [ ] Solve defaults options.
 - [ ] Add iterator method for array.
 - [ ] Convert hex designer to class.
 - [ ] Add get hex at pixel method to designer (with offset + zoom).
