@@ -72,6 +72,17 @@ export function getBoardHexCenters(cols, rows, options = {}) {
 
 export function isInsideHex(x, y, options = {}) {
     options = fillOptions(options)
+
+    if (options.optimized) {
+        let xHexMultiplier = options.radius * options.scaleX
+        let yHexMultiplier = HEX_RATIO * options.radius * options.scaleY
+        let inscribedRadiusSqr = xHexMultiplier * yHexMultiplier
+        let center = new Vector(options.centerX, options.centerY)
+
+        return center.distSqr(new Vector(x, y)) <= inscribedRadiusSqr
+    } else {
+        // TODO
+    }
 }
 
 export function getColRowFromPosition(x, y, options = {}) {
@@ -87,11 +98,12 @@ export function getColRowFromPosition(x, y, options = {}) {
     let rowDenumerator = 2 * yHexMultiplier + options.padding
     let row = Math.round(rowNumerator / rowDenumerator)
 
-    let inscribedRadiusSqr = yHexMultiplier * yHexMultiplier
     let center = getHexCenter(col, row, options)
+    options.centerX = center.x
+    options.centerY = center.y
 
     // check if inside inscribed circle first
-    if (options.optimized && center.distSqr(new Vector(x, y)) <= inscribedRadiusSqr) {
+    if (isInsideHex(x, y, options)) {
         return new ColRow(col, row)
     } else {
         return null

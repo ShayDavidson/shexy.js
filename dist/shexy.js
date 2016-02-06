@@ -183,6 +183,17 @@ var Shexy =
 	    var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 	
 	    options = fillOptions(options);
+	
+	    if (options.optimized) {
+	        var xHexMultiplier = options.radius * options.scaleX;
+	        var yHexMultiplier = HEX_RATIO * options.radius * options.scaleY;
+	        var inscribedRadiusSqr = xHexMultiplier * yHexMultiplier;
+	        var center = new _vector.Vector(options.centerX, options.centerY);
+	
+	        return center.distSqr(new _vector.Vector(x, y)) <= inscribedRadiusSqr;
+	    } else {
+	        // TODO
+	    }
 	}
 	
 	function getColRowFromPosition(x, y) {
@@ -200,11 +211,12 @@ var Shexy =
 	    var rowDenumerator = 2 * yHexMultiplier + options.padding;
 	    var row = Math.round(rowNumerator / rowDenumerator);
 	
-	    var inscribedRadiusSqr = yHexMultiplier * yHexMultiplier;
 	    var center = getHexCenter(col, row, options);
+	    options.centerX = center.x;
+	    options.centerY = center.y;
 	
 	    // check if inside inscribed circle first
-	    if (options.optimized && center.distSqr(new _vector.Vector(x, y)) <= inscribedRadiusSqr) {
+	    if (isInsideHex(x, y, options)) {
 	        return new _col_row.ColRow(col, row);
 	    } else {
 	        return null;
