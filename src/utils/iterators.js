@@ -52,3 +52,21 @@ export function matrixColRowIterator(matrix, handler) {
         }
     }
 }
+
+export function matrixColRowMapIterator(matrix, mapFunction) {
+    let mappedMatrix = new Array(matrix.length)
+    for (let col = 0; col < matrix.length; col++) {
+        for (let row = 0; row < matrix[col].length; row++) {
+            mappedMatrix[col] || (mappedMatrix[col] = new Array(matrix[col].length))
+            mappedMatrix[col][row] = mapFunction(matrix[col][row], col, row)
+        }
+    }
+    return mappedMatrix
+}
+
+
+export function objectIterator(object, handler) {
+    for (var key in object) {
+        handler(key, object[key])
+    }
+}

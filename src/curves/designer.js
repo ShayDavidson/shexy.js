@@ -1,6 +1,6 @@
 import { Vector } from 'utils/vector'
 import { ColRow } from 'utils/col_row'
-import { colRowMapIterator } from 'utils/iterators'
+import { colRowMapIterator, matrixColRowMapIterator } from 'utils/iterators'
 
 /**
 * The ratio between half the height of the hex to its radius,
@@ -67,6 +67,24 @@ export function getBoardHexCenters(cols, rows, options = {}) {
 
     return colRowMapIterator(cols, rows, (col, row) => {
         return getHexCenter(col, row, options)
+    })
+}
+
+export function getBoardJunctionsCenters(cols, rows, options = {}) {
+    options = fillOptions(options)
+
+    let centers = colRowMapIterator(cols, rows, (col, row) => {
+        return getHexCenter(col, row, options)
+    })
+
+    let radius = options.radius + (options.padding / 2)
+    return matrixColRowMapIterator(centers, (center) => {
+        let hexOptions = Object.assign(options, {
+            centerX: center.x,
+            centerY: center.y,
+            radius: radius
+        })
+        return getHexVertices(hexOptions)
     })
 }
 

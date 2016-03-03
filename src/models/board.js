@@ -19,7 +19,7 @@ export class Board {
         this.cols = options.cols
         this.rows = options.rows
         this._constructHexMatrix()
-        this._connectHexMatrix()
+        this._constructHexEdges()
     }
 
     get(col, row) {
@@ -40,7 +40,7 @@ export class Board {
         })
     }
 
-    _connectHexMatrix() {
+    _constructHexEdges() {
         this.each((row, col, hex) => {
             let oddColDiff = (col % 2 === 0) ? 1 : 0
             hex.connectAdajacent(this.get(row + 1, col), Direction.BOT)

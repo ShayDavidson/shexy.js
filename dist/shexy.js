@@ -103,6 +103,7 @@ var Shexy =
 	exports.getHexVertices = getHexVertices;
 	exports.getHexCenter = getHexCenter;
 	exports.getBoardHexCenters = getBoardHexCenters;
+	exports.getBoardJunctionsCenters = getBoardJunctionsCenters;
 	exports.isInsideHex = isInsideHex;
 	exports.getColRowFromPosition = getColRowFromPosition;
 	
@@ -176,6 +177,26 @@ var Shexy =
 	
 	    return (0, _iterators.colRowMapIterator)(cols, rows, function (col, row) {
 	        return getHexCenter(col, row, options);
+	    });
+	}
+	
+	function getBoardJunctionsCenters(cols, rows) {
+	    var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	
+	    options = fillOptions(options);
+	
+	    var centers = (0, _iterators.colRowMapIterator)(cols, rows, function (col, row) {
+	        return getHexCenter(col, row, options);
+	    });
+	
+	    var radius = options.radius + options.padding / 2;
+	    return (0, _iterators.matrixColRowMapIterator)(centers, function (center) {
+	        var hexOptions = _extends(options, {
+	            centerX: center.x,
+	            centerY: center.y,
+	            radius: radius
+	        });
+	        return getHexVertices(hexOptions);
 	    });
 	}
 	
@@ -306,6 +327,7 @@ var Shexy =
 	exports.colRowIterator = colRowIterator;
 	exports.colRowMapIterator = colRowMapIterator;
 	exports.matrixColRowIterator = matrixColRowIterator;
+	exports.matrixColRowMapIterator = matrixColRowMapIterator;
 	/**
 	* @callback rowColHandler
 	* @param {Integer} col The current column in the iteration step.
@@ -359,6 +381,17 @@ var Shexy =
 	            handler(matrix[col][row], col, row);
 	        }
 	    }
+	}
+	
+	function matrixColRowMapIterator(matrix, mapFunction) {
+	    var mappedMatrix = new Array(matrix.length);
+	    for (var col = 0; col < matrix.length; col++) {
+	        for (var row = 0; row < matrix[col].length; row++) {
+	            mappedMatrix[col] || (mappedMatrix[col] = new Array(matrix[col].length));
+	            mappedMatrix[col][row] = mapFunction(matrix[col][row], col, row);
+	        }
+	    }
+	    return mappedMatrix;
 	}
 
 /***/ },
