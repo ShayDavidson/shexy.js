@@ -70,7 +70,7 @@ export function getBoardHexCenters(cols, rows, options = {}) {
     })
 }
 
-export function getBoardJunctionsCenters(cols, rows, options = {}) {
+export function getBoardPaddingCenters(cols, rows, options = {}) {
     options = fillOptions(options)
 
     let centers = colRowMapIterator(cols, rows, (col, row) => {
