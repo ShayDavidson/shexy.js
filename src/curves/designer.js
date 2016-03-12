@@ -1,6 +1,6 @@
 import { Vector } from 'utils/vector'
 import { ColRow } from 'utils/col_row'
-import { colRowMapIterator, matrixColRowMapIterator } from 'utils/iterators'
+import { colRowMapToMatrix, colRowMapToArray } from 'utils/iterators'
 
 /**
 * The ratio between half the height of the hex to its radius,
@@ -65,27 +65,32 @@ export function getHexCenter(col, row, options = {}) {
 export function getBoardHexCenters(cols, rows, options = {}) {
     options = fillOptions(options)
 
-    return colRowMapIterator(cols, rows, (col, row) => {
+    return colRowMapToMatrix(cols, rows, (col, row) => {
         return getHexCenter(col, row, options)
     })
 }
 
-export function getBoardPaddingCenters(cols, rows, options = {}) {
-    options = fillOptions(options)
-
-    let centers = colRowMapIterator(cols, rows, (col, row) => {
-        return getHexCenter(col, row, options)
-    })
-
-    let radius = options.radius + (options.padding / 2)
-    return matrixColRowMapIterator(centers, (center) => {
-        let hexOptions = Object.assign(options, {
-            centerX: center.x,
-            centerY: center.y,
-            radius: radius
-        })
-        return getHexVertices(hexOptions)
-    })
+export function getBoardVerticesCenters(cols, rows, options = {}) {
+    // options = fillOptions(options)
+    //
+    // let centers = colRowMapToArray(cols, rows, (col, row) => {
+    //     return getHexCenter(col, row, options)
+    // })
+    //
+    // let paddingCentersRadius = options.radius + (options.padding / 2)
+    // let paddingCenters = centers.map((center) => {
+    //     let newOptions = Object.assign({}, options, {
+    //         centerX: center.x,
+    //         centerY: center.y,
+    //         radius: paddingCentersRadius
+    //     })
+    //     return getHexVertices(newOptions)
+    // })
+    // let flatPaddingCenters = [].concat.apply([], paddingCenters)
+    // let flatPaddingCentersWithoutDups = flatPaddingCenters.filter((coord) => {
+    //
+    // })
+    // return flatPaddingCentersWithoutDups
 }
 
 export function isInsideHex(x, y, options = {}) {

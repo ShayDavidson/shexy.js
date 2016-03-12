@@ -20,7 +20,7 @@
 * @param {rowColHandler} handler A handler for each step of the iteration.
 * @returns {undefined}
 */
-export function colRowIterator(cols, rows, handler) {
+export function colRowEach(cols, rows, handler) {
     for (let col = 0; col < cols; col++) {
         for (let row = 0; row < rows; row++) {
             handler(col, row)
@@ -36,34 +36,28 @@ export function colRowIterator(cols, rows, handler) {
 * @param {rowColMapFunction} mapFunction A map function that returns the mapped value.
 * @returns {Array<Array[]>} The mapping result.
 */
-export function colRowMapIterator(cols, rows, mapFunction) {
+export function colRowMapToMatrix(cols, rows, mapFunction) {
     let matrix = new Array(cols)
-    colRowIterator(cols, rows, (col, row) => {
+    colRowEach(cols, rows, (col, row) => {
         matrix[col] || (matrix[col] = new Array(rows))
         matrix[col][row] = mapFunction(col, row)
     })
     return matrix
 }
 
-export function matrixColRowIterator(matrix, handler) {
-    for (let col = 0; col < matrix.length; col++) {
-        for (let row = 0; row < matrix[col].length; row++) {
-            handler(matrix[col][row], col, row)
-        }
-    }
+export function colRowMapToArray(cols, rows, mapFunction) {
+    let map = new Array()
+    colRowEach(cols, rows, (col, row) => {
+        map.push(mapFunction(col, row))
+    })
+    return map
 }
 
-export function matrixColRowMapIterator(matrix, mapFunction) {
-    let mappedMatrix = new Array(matrix.length)
-    for (let col = 0; col < matrix.length; col++) {
-        for (let row = 0; row < matrix[col].length; row++) {
-            mappedMatrix[col] || (mappedMatrix[col] = new Array(matrix[col].length))
-            mappedMatrix[col][row] = mapFunction(matrix[col][row], col, row)
-        }
-    }
-    return mappedMatrix
+export function matrixEach(matrix, handler) {
+    colRowEach(matrix.length, matrix[0].length, (col, row) => {
+        handler(matrix[col][row], col, row)
+    })
 }
-
 
 export function objectIterator(object, handler) {
     for (var key in object) {

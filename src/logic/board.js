@@ -1,6 +1,6 @@
 import { Hex } from 'hex'
-import { Direction } from 'utils/direction'
-import { colRowIterator, colRowMapIterator } from 'utils/iterators'
+import { Direction } from 'logic/direction'
+import { colRowEach, colRowMapToMatrix } from 'utils/iterators'
 
 /**
 * @Class Board
@@ -29,13 +29,13 @@ export class Board {
     }
 
     each(func) {
-        colRowIterator(this.cols, this.rows, (col, row) => {
+        colRowEach(this.cols, this.rows, (col, row) => {
             func.call(this, col, row, this.get(col, row))
         })
     }
 
     _constructHexMatrix() {
-        this._hexMatrix = colRowMapIterator(this.cols, this.rows, (col, row) => {
+        this._hexMatrix = colRowMapToMatrix(this.cols, this.rows, (col, row) => {
             return new Hex(col, row)
         })
     }

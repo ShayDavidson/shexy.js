@@ -6,6 +6,8 @@
 - [ ] Get rotate hex coordinates from hex options (also pass to designer)
 - [ ] Board - first row starts high or low (also pass to designer)
 - [ ] Non-Optimized version for hex in position
+- [ ] Move fill options to utils.
+- [ ] Defensive programming - assert params.
 
 ## Library infrasturcture
 - [ ] Add test coverage (with threshold) - make it work in ES6. https://github.com/ambitioninc/babel-istanbul

@@ -1,6 +1,6 @@
-import { colRowIterator, colRowMapIterator } from 'utils/iterators'
+import { colRowEach, colRowMapToMatrix } from 'utils/iterators'
 
-let itShouldActLikeAColRowIterator = function(cols, rows, spy) {
+let itShouldActLikeAcolRowEach = function(cols, rows, spy) {
     it('should call the handler function col * rows times', function() {
         spy.should.have.been.callCount(cols * rows)
     })
@@ -16,19 +16,19 @@ let itShouldActLikeAColRowIterator = function(cols, rows, spy) {
     })
 }
 
-describe('colRowIterator', function() {
+describe('colRowEach', function() {
     let spy = sinon.spy()
     let cols = 1
     let rows = 2
 
     before(function() {
-        colRowIterator(cols, rows, spy)
+        colRowEach(cols, rows, spy)
     })
 
-    itShouldActLikeAColRowIterator(cols, rows, spy)
+    itShouldActLikeAcolRowEach(cols, rows, spy)
 })
 
-describe('colRowMapIterator', function() {
+describe('colRowMapToMatrix', function() {
     let mapFunction = (col, row) => {
         return {col: col, row: row}
     }
@@ -38,10 +38,10 @@ describe('colRowMapIterator', function() {
     let mapResult
 
     before(function() {
-        mapResult = colRowMapIterator(cols, rows, spy)
+        mapResult = colRowMapToMatrix(cols, rows, spy)
     })
 
-    itShouldActLikeAColRowIterator(cols, rows, spy)
+    itShouldActLikeAcolRowEach(cols, rows, spy)
 
     it('should return a matrix mapped according to the given map function', function() {
         for (let col = 0; col < cols; col++) {

@@ -21,7 +21,7 @@
 
     function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        Shexy.Iterators.matrixColRowIterator(coords, function(coord, col, row) {
+        Shexy.Iterators.matrixEach(coords, function(coord, col, row) {
             var poly = Shexy.Designer.getHexVertices({
                 radius: radius,
                 scaleX: scaleX,
@@ -49,6 +49,8 @@
         current = Shexy.Designer.getColRowFromPosition(pos.x, pos.y, options);
         draw();
     });
+
+    console.log(Shexy.Designer.getBoardVerticesCenters(cols, rows, options));
 
     draw();
 })()
