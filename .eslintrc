@@ -10,9 +10,9 @@
 	"rules": {
 		"indent": [2, "tab", { "SwitchCase": 1 }],
 		"key-spacing": [2, { "mode": "minimum" }],
+		"no-path-concat": 0,
 		"no-tabs": 0,
-		"react/jsx-indent": [2, "tab"],
-		"react/jsx-indent-props": [2, "tab"],
+		"no-var": 2,
 		"space-before-function-paren": 0,
 		"spaced-comment": 0,
 	},
