@@ -20,6 +20,7 @@
 	var coords = Shexy.Designer.getBoardHexCenters(rows, cols, options)
 
 	function draw() {
+		var hover = false
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		Shexy.Iterators.matrixEach(coords, function(coord, col, row) {
 			var poly = Shexy.Designer.getHexVertices({
@@ -31,12 +32,19 @@
 			});
 			var color;
 			if (current && current.col == col && current.row == row) {
+				hover = true
 				color = 'gray'
 			} else {
 				color = 'red'
 			}
 			Shexy.CanvasUtils.drawPolygon(ctx, poly, {fillStyle: color});
 		});
+
+		if (hover) {
+			document.body.style.cursor = 'pointer'
+		} else {
+			document.body.style.cursor = 'auto'
+		}
 	}
 
 	function getMousePos(canvas, event) {
