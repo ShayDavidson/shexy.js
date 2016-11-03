@@ -2,5 +2,5 @@
 .eslintcache
 node_modules
 tmp
-dist
+bundle
 npm-debug.log

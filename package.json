@@ -21,7 +21,7 @@
   "bugs": {
     "url": "https://github.com/ShayDavidson/shexy.js/issues"
   },
-  "main": "./dist/shexy.js",
+  "main": "./lib/index.js",
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",

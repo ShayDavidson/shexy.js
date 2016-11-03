@@ -1,14 +1,14 @@
-const webpack = require('webpack')
+var webpack = require('webpack') // eslint-disable-line no-var
 
 module.exports = {
 	entry: {
-		'shexy': './src/index.js',
-		'shexy.min': './src/index.js'
+		'shexy': './lib/index.js',
+		'shexy.min': './lib/index.js'
 	},
 	output: {
 		libraryTarget: 'var',
 		library: 'Shexy',
-		path: __dirname + '/dist',
+		path: __dirname + '/bundle',
 		filename: '[name].js'
 	},
 	optimize: {

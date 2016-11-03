@@ -1,3 +1,11 @@
+## For Hexhacktly
+
+- [ ] Sanity check (remove useless features?).
+- [ ] Intermediate paths.
+- [ ] Round board.
+- [ ] Publish script + CDN publish?
+
+
 ## Features
 
 - [ ] Add iterator method for array.
@@ -7,19 +15,19 @@
 - [ ] Board - first row starts high or low (also pass to designer)
 - [ ] Non-Optimized version for hex in position
 - [ ] Move fill options to utils.
-- [ ] Defensive programming - assert params.
 
 ## Library infrasturcture
+- [ ] Flow for type checking.
+- [ ] Tests with JEST.
 - [ ] Add test coverage (with threshold) - make it work in ES6. https://github.com/ambitioninc/babel-istanbul
 - [ ] Add JSDoc.
 - [ ] Proper lib (npm/ requireJS/ commonJS/ AMD/ browser).
 - [ ] Modify issues / pull-request tags.
 - [ ] Extend CONTRIBUTING and add CODE_OF_CONDUCT.
-- [ ] Convert npm pre-publish hook to new version ("prepublish": "npm build-lib && npm run lint && npm test && npm build-dist")
+- [ ] Prepublish scripts with tests, cover, etc - publish to bower, npm, cdnjs.
 - [ ] Add CI / build checker / pull-request checker (travis?).
 - [ ] Add Wiki.
 - [ ] Add proper tags.
 - [ ] README (+logo).
 - [ ] Add examples.
-- [ ] Add publish script (npm + bower + cdnjs?)
 - [ ] Github page.
