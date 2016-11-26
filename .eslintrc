@@ -1,12 +1,16 @@
 {
 	"extends": [
-		"standard"
+		"standard",
+		"plugin:import/errors"
 	],
 	"parser": "babel-eslint",
 	"globals": {
 		"document": true,
 		"window": true,
 	},
+	"plugins": [
+		"import"
+	],
 	"rules": {
 		"indent": [2, "tab", { "SwitchCase": 1 }],
 		"key-spacing": [2, { "mode": "minimum" }],

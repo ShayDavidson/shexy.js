@@ -4,7 +4,7 @@
 - [ ] Intermediate paths.
 - [ ] Round board.
 - [ ] Publish script + CDN publish?
-
+- [ ] Object destructuring in params
 
 ## Features
 
