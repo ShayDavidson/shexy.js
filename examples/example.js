@@ -8,8 +8,8 @@ const camera = {
 	center: Shexy.View.Point(canvas.width / 2, canvas.height / 2),
 	zoom: 1
 }
-let selectedHex = null
-let currentHex = null
+let selectedHex = undefined
+let currentHex = undefined
 const grid = Shexy.Grid.Grid(range)
 
 function draw() {
@@ -30,20 +30,27 @@ function draw() {
 		 color = 'blue'
 		} else if (currentHex && Shexy.Coords.areAxialsEqual(currentHex.coords.axial, hex.coords.axial)) {
 			color = 'red'
-			// const vertices = Shexy.Coords.cubeVertices(hex.coords.cube)
-			// vertices.forEach((vertex) => {
-			// 	let point = Shexy.View.vertexToPoint(vertex, size, padding)
-			// 	point = Shexy.View.addPoints(point, camera.center)
-			// 	ctx.beginPath()
-			// 	ctx.fillStyle = 'blue'
-			// 	ctx.arc(point.x, point.y, padding / 2, 0, 2 * Math.PI, false)
-			// 	ctx.stroke()
-			// })
 		} else {
 			color = 'gray'
 		}
 		Shexy.Canvas.drawPolygon(ctx, corners, {fillStyle: color})
 	})
+
+	if (currentHex && selectedHex) {
+		const vertexA = Shexy.Coords.Vertex(selectedHex.coords.cube, 0)
+		const vertexB = Shexy.Coords.Vertex(currentHex.coords.cube, 0)
+		const path = Shexy.Grid.shortestPathFrom(grid, vertexA, vertexB)
+		path.forEach(drawVertex)
+	}
+}
+
+function drawVertex(vertex) {
+	let point = Shexy.View.vertexToPoint(vertex, size, padding)
+	point = Shexy.View.addPoints(point, camera.center)
+	ctx.beginPath()
+	ctx.fillStyle = 'blue'
+	ctx.arc(point.x, point.y, padding / 2, 0, 2 * Math.PI, false)
+	ctx.stroke()
 }
 
 function getMousePos(canvas, event) {
@@ -57,7 +64,9 @@ function getAxialAtEvent(event) {
 }
 
 canvas.addEventListener('mousemove', (event) => {
-	currentHex = Shexy.Grid.hexAt(grid, getAxialAtEvent(event))
+	const tempCurrentHex = Shexy.Grid.hexAt(grid, getAxialAtEvent(event))
+	if (tempCurrentHex === selectedHex) return
+	currentHex = tempCurrentHex
 	draw()
 })
 
