@@ -8,6 +8,7 @@ const camera = {
 	center: Shexy.View.Point(canvas.width / 2, canvas.height / 2),
 	zoom: 1
 }
+let selectedHex = null
 let currentHex = null
 const grid = Shexy.Grid.Grid(range)
 
@@ -25,17 +26,19 @@ function draw() {
 			return Shexy.View.addPoints(corner, camera.center)
 		})
 		let color
-		if (currentHex && Shexy.Coords.areAxialsEqual(currentHex.coords.axial, hex.coords.axial)) {
+		if (selectedHex && Shexy.Coords.areAxialsEqual(selectedHex.coords.axial, hex.coords.axial)) {
+		 color = 'blue'
+		} else if (currentHex && Shexy.Coords.areAxialsEqual(currentHex.coords.axial, hex.coords.axial)) {
 			color = 'red'
-			const vertices = Shexy.Coords.cubeVertices(hex.coords.cube)
-			vertices.forEach((vertex) => {
-				let point = Shexy.View.vertexToPoint(vertex, size, padding)
-				point = Shexy.View.addPoints(point, camera.center)
-				ctx.beginPath()
-				ctx.fillStyle = 'blue'
-				ctx.arc(point.x, point.y, padding / 2, 0, 2 * Math.PI, false)
-				ctx.stroke()
-			})
+			// const vertices = Shexy.Coords.cubeVertices(hex.coords.cube)
+			// vertices.forEach((vertex) => {
+			// 	let point = Shexy.View.vertexToPoint(vertex, size, padding)
+			// 	point = Shexy.View.addPoints(point, camera.center)
+			// 	ctx.beginPath()
+			// 	ctx.fillStyle = 'blue'
+			// 	ctx.arc(point.x, point.y, padding / 2, 0, 2 * Math.PI, false)
+			// 	ctx.stroke()
+			// })
 		} else {
 			color = 'gray'
 		}
@@ -48,10 +51,18 @@ function getMousePos(canvas, event) {
 	return { x: event.clientX - rect.left, y: event.clientY - rect.top }
 }
 
-canvas.addEventListener('mousemove', (event) => {
+function getAxialAtEvent(event) {
 	const pos = Shexy.View.subtractPoints(getMousePos(canvas, event), camera.center)
-	const currentAxial = Shexy.View.pointToAxial(pos, size, padding)
-	currentHex = Shexy.Grid.hexAt(grid, currentAxial)
+	return Shexy.View.pointToAxial(pos, size, padding)
+}
+
+canvas.addEventListener('mousemove', (event) => {
+	currentHex = Shexy.Grid.hexAt(grid, getAxialAtEvent(event))
+	draw()
+})
+
+canvas.addEventListener('click', (event) => {
+	selectedHex = Shexy.Grid.hexAt(grid, getAxialAtEvent(event))
 	draw()
 })
 
