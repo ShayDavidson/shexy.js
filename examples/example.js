@@ -35,7 +35,7 @@ function getMousePos(canvas, event) {
 	return { x: event.clientX - rect.left, y: event.clientY - rect.top }
 };
 
-canvas.addEventListener("mousemove", function(event) {
+canvas.addEventListener('mousemove', function(event) {
 	var pos = Shexy.View.subtractPoints(getMousePos(canvas, event), camera.center)
 	var currentAxial = Shexy.View.pointToAxial(pos, size, padding)
 	currentHex = Shexy.Grid.hexAt(grid, currentAxial)
