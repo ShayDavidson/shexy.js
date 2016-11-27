@@ -2,8 +2,8 @@ var canvas = document.getElementById('canvas')
 var ctx = canvas.getContext('2d')
 
 var size = 20
-var range = 1
-var padding = 0
+var range = 3
+var padding = 10
 var camera = {
 	center: Shexy.View.Point(canvas.width / 2, canvas.height / 2),
 	zoom: 1
