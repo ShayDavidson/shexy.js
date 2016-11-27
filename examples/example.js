@@ -60,9 +60,9 @@ function drawPath(path) {
 		const nextPoint = Shexy.View.addPoints(Shexy.View.vertexToPoint(path[i + 1], size, padding), camera.center)
 		ctx.lineWidth = padding / 2 - 2
 		ctx.strokeStyle = 'black'
-		ctx.stroke()
 		ctx.moveTo(point.x, point.y)
 		ctx.lineTo(nextPoint.x, nextPoint.y)
+		ctx.stroke()
 	}
 }
 
@@ -77,15 +77,19 @@ function getAxialAtEvent(event) {
 }
 
 canvas.addEventListener('mousemove', (event) => {
-	const tempCurrentHex = Shexy.Grid.hexAt(grid, getAxialAtEvent(event))
-	if (tempCurrentHex === selectedHex) return
-	currentHex = tempCurrentHex
-	draw()
+	const newCurrentHex = Shexy.Grid.hexAt(grid, getAxialAtEvent(event))
+	if (newCurrentHex !== selectedHex && newCurrentHex !== currentHex) {
+		currentHex = newCurrentHex
+		draw()
+	}
 })
 
 canvas.addEventListener('click', (event) => {
-	selectedHex = Shexy.Grid.hexAt(grid, getAxialAtEvent(event))
-	draw()
+	newSelectedHex = Shexy.Grid.hexAt(grid, getAxialAtEvent(event))
+	if (newSelectedHex !== selectedHex) {
+		selectedHex = newSelectedHex
+		draw()
+	}
 })
 
 draw()
