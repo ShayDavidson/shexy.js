@@ -41,16 +41,29 @@ function draw() {
 		const vertexB = Shexy.Coords.Vertex(currentHex.coords.cube, 0)
 		const path = Shexy.Grid.shortestPathFrom(grid, vertexA, vertexB)
 		path.forEach(drawVertex)
+		drawPath(path)
 	}
 }
 
 function drawVertex(vertex) {
-	let point = Shexy.View.vertexToPoint(vertex, size, padding)
-	point = Shexy.View.addPoints(point, camera.center)
+	const point = Shexy.View.addPoints(Shexy.View.vertexToPoint(vertex, size, padding), camera.center)
 	ctx.beginPath()
-	ctx.fillStyle = 'blue'
-	ctx.arc(point.x, point.y, padding / 2, 0, 2 * Math.PI, false)
+	ctx.fillStyle = 'black'
+	ctx.arc(point.x, point.y, padding / 2 - 2, 0, 2 * Math.PI, false)
+	ctx.fill()
 	ctx.stroke()
+}
+
+function drawPath(path) {
+	for (let i = 0; i < path.length - 1; i++) {
+		const point = Shexy.View.addPoints(Shexy.View.vertexToPoint(path[i], size, padding), camera.center)
+		const nextPoint = Shexy.View.addPoints(Shexy.View.vertexToPoint(path[i + 1], size, padding), camera.center)
+		ctx.lineWidth = padding / 2 - 2
+		ctx.strokeStyle = 'black'
+		ctx.stroke()
+		ctx.moveTo(point.x, point.y)
+		ctx.lineTo(nextPoint.x, nextPoint.y)
+	}
 }
 
 function getMousePos(canvas, event) {
