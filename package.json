@@ -1,48 +1,35 @@
 {
   "name": "shexy",
   "version": "0.1.0",
-  "description": "Everything related to Hexagons in one awesome JS library.",
-  "keywords": [
-    "hex",
-    "hexagon",
-    "board"
-  ],
-  "homepage": "https://github.com/ShayDavidson/shexy.js",
-  "author": {
-    "name": "Shay Davidson",
-    "email": "shay.h.davidson@gmail.com",
-    "url": "https://github.com/ShayDavidson"
-  },
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ShayDavidson/shexy.js"
-  },
-  "bugs": {
-    "url": "https://github.com/ShayDavidson/shexy.js/issues"
-  },
   "main": "./bundle/index.js",
+  "private": true,
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "scripts": {
+    "start": "webpack-dev-server --content-base public/ --inline",
+    "open": "open http://localhost:8080",
     "build": "webpack",
-    "watch": "webpack --watch",
-    "open": "open ./examples/example.html",
-    "lint": "eslint src/**/*.js test/**/*.js --cache --max-warnings 0",
-    "prepublish": "npm run build"
+    "build:release": "NODE_ENV=production webpack",
+    "watch": "webpack -w",
+    "lint": "node_modules/.bin/eslint ."
   },
   "devDependencies": {
-    "babel-core": "^6.4.0",
+    "babel-core": "^6.14.0",
     "babel-eslint": "^7.1.0",
-    "babel-loader": "^6.2.1",
-    "babel-plugin-add-module-exports": "^0.1.2",
+    "babel-loader": "^6.2.5",
     "babel-plugin-transform-object-assign": "^6.3.13",
     "babel-plugin-transform-object-rest-spread": "^6.16.0",
-    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-es2015": "^6.14.0",
     "eslint": "3.4.0",
     "eslint-config-standard": "6.0.0",
+    "eslint-import-resolver-webpack": "^0.7.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "2.0.0",
-    "jsdoc": "^3.4.0",
-    "webpack": "^1.12.6"
+    "json-loader": "0.5.4",
+    "webpack": "1.13.2",
+    "webpack-dev-server": "1.15.1",
+    "webpack-validator": "2.2.7"
   }
 }

@@ -1,4 +1,4 @@
 {
 	"presets": ["es2015"],
-	"plugins": ["add-module-exports", "transform-object-assign", "transform-object-rest-spread"]
+	"plugins": ["transform-object-assign", "transform-object-rest-spread"]
 }
