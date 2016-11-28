@@ -1,1 +1,3 @@
 - Pool for coords
+- Order
+- Connected hexes

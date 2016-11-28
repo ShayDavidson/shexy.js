@@ -1,9 +1,10 @@
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
-const size = 20
-const range = 4
-const padding = 10
+const size = 22
+const range = 5
+const padding = 7
+const vertexWidth = 4
 const camera = {
 	center: Shexy.View.Point(canvas.width / 2, canvas.height / 2),
 	zoom: 1
@@ -40,6 +41,7 @@ function draw() {
 		const vertexA = Shexy.Coords.Vertex(selectedHex.coords.cube, 0)
 		const vertexB = Shexy.Coords.Vertex(currentHex.coords.cube, 0)
 		const path = Shexy.Grid.shortestPathFrom(grid, vertexA, vertexB)
+		ctx.lineWidth = 0
 		path.forEach(drawVertex)
 		drawPath(path)
 	}
@@ -49,16 +51,16 @@ function drawVertex(vertex) {
 	const point = Shexy.View.addPoints(Shexy.View.vertexToPoint(vertex, size, padding), camera.center)
 	ctx.beginPath()
 	ctx.fillStyle = 'black'
-	ctx.arc(point.x, point.y, padding / 2 - 2, 0, 2 * Math.PI, false)
+	ctx.lineWidth = 0
+	ctx.arc(point.x, point.y, vertexWidth / 2, 0, 2 * Math.PI, false)
 	ctx.fill()
-	ctx.stroke()
 }
 
 function drawPath(path) {
 	for (let i = 0; i < path.length - 1; i++) {
 		const point = Shexy.View.addPoints(Shexy.View.vertexToPoint(path[i], size, padding), camera.center)
 		const nextPoint = Shexy.View.addPoints(Shexy.View.vertexToPoint(path[i + 1], size, padding), camera.center)
-		ctx.lineWidth = padding / 2 - 2
+		ctx.lineWidth = vertexWidth
 		ctx.strokeStyle = 'black'
 		ctx.moveTo(point.x, point.y)
 		ctx.lineTo(nextPoint.x, nextPoint.y)
