@@ -1,6 +1,7 @@
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
+const seed = 7060
 const size = 22
 const range = 5
 const padding = 7
@@ -9,11 +10,13 @@ const camera = {
 	center: Shexy.View.Point(canvas.width / 2, canvas.height / 2),
 	zoom: 1
 }
+
+let mode = 'path'
 let selectedHex = undefined
 let currentHex = undefined
 let selectedVertex = 0
 let currentVertex = 0
-const grid = Shexy.Grid.Grid(range)
+const grid = Shexy.Grid.Grid(range, Shexy.Random.getRNG(seed))
 
 function draw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -39,7 +42,7 @@ function draw() {
 		Shexy.Canvas.drawPolygon(ctx, corners, {fillStyle: color})
 	})
 
-	if (currentHex && selectedHex) {
+	if (mode === 'path' && currentHex && selectedHex) {
 		const vertexA = Shexy.Coords.Vertex(selectedHex.coords.cube, selectedVertex)
 		const vertexB = Shexy.Coords.Vertex(currentHex.coords.cube, currentVertex)
 		const path = Shexy.Grid.shortestPathFrom(grid, vertexA, vertexB)
@@ -85,6 +88,13 @@ function getAxialAtEvent(event) {
 	const vertex = Shexy.View.pointToCornerInAxial(pos, axial, size, padding)
 	return [axial, vertex]
 }
+
+document.getElementsByName('mode').forEach((radio) => {
+	radio.addEventListener('click', () => {
+		mode = radio.value
+		draw()
+	})
+})
 
 canvas.addEventListener('mousemove', (event) => {
 	const [point, vertex] = getAxialAtEvent(event)
