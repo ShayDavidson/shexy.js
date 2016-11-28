@@ -11,6 +11,8 @@ const camera = {
 }
 let selectedHex = undefined
 let currentHex = undefined
+let selectedVertex = 0
+let currentVertex = 0
 const grid = Shexy.Grid.Grid(range)
 
 function draw() {
@@ -38,22 +40,26 @@ function draw() {
 	})
 
 	if (currentHex && selectedHex) {
-		const vertexA = Shexy.Coords.Vertex(selectedHex.coords.cube, 0)
-		const vertexB = Shexy.Coords.Vertex(currentHex.coords.cube, 0)
+		const vertexA = Shexy.Coords.Vertex(selectedHex.coords.cube, selectedVertex)
+		const vertexB = Shexy.Coords.Vertex(currentHex.coords.cube, currentVertex)
 		const path = Shexy.Grid.shortestPathFrom(grid, vertexA, vertexB)
-		ctx.lineWidth = 0
-		path.forEach(drawVertex)
+		path.forEach((vertex) => drawVertex(vertex))
 		drawPath(path)
+		drawVertex(vertexA, true)
+		drawVertex(vertexB, true)
 	}
 }
 
-function drawVertex(vertex) {
+function drawVertex(vertex, selected = false) {
 	const point = Shexy.View.addPoints(Shexy.View.vertexToPoint(vertex, size, padding), camera.center)
 	ctx.beginPath()
-	ctx.fillStyle = 'black'
-	ctx.lineWidth = 0
-	ctx.arc(point.x, point.y, vertexWidth / 2, 0, 2 * Math.PI, false)
+	ctx.fillStyle = selected ? 'white' : 'black'
+	ctx.lineWidth = selected ? 0 : vertexWidth
+	ctx.strokeStyle = 'black'
+	const radius = selected ? vertexWidth * 2 : vertexWidth / 2
+	ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI, false)
 	ctx.fill()
+	if (selected) ctx.stroke()
 }
 
 function drawPath(path) {
@@ -75,21 +81,29 @@ function getMousePos(canvas, event) {
 
 function getAxialAtEvent(event) {
 	const pos = Shexy.View.subtractPoints(getMousePos(canvas, event), camera.center)
-	return Shexy.View.pointToAxial(pos, size, padding)
+	const axial = Shexy.View.pointToAxial(pos, size, padding)
+	const vertex = Shexy.View.pointToCornerInAxial(pos, axial, size, padding)
+	return [axial, vertex]
 }
 
 canvas.addEventListener('mousemove', (event) => {
-	const newCurrentHex = Shexy.Grid.hexAt(grid, getAxialAtEvent(event))
-	if (newCurrentHex !== selectedHex && newCurrentHex !== currentHex) {
+	const [point, vertex] = getAxialAtEvent(event)
+	const newCurrentHex = Shexy.Grid.hexAt(grid, point)
+	newCurrentVertex = vertex
+	if ((newCurrentHex !== selectedHex && newCurrentHex !== currentHex) || newCurrentVertex !== currentVertex){
 		currentHex = newCurrentHex
+		currentVertex = newCurrentVertex
 		draw()
 	}
 })
 
 canvas.addEventListener('click', (event) => {
-	newSelectedHex = Shexy.Grid.hexAt(grid, getAxialAtEvent(event))
-	if (newSelectedHex !== selectedHex) {
+	const [point, vertex] = getAxialAtEvent(event)
+	newSelectedHex = Shexy.Grid.hexAt(grid, point)
+	newSelectedVertex = vertex
+	if (newSelectedHex !== selectedHex || newSelectedVertex !== selectedVertex) {
 		selectedHex = newSelectedHex
+		selectedVertex = newSelectedVertex
 		draw()
 	}
 })

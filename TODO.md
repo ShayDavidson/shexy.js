@@ -1,3 +1,4 @@
 - Pool for coords
 - Order
 - Connected hexes
+- Define terimonology (e.g. Vertex i is a corner? )
