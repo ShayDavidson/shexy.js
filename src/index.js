@@ -31,15 +31,15 @@ function draw() {
 		document.body.style.cursor = 'auto'
 	}
 	gridForEachHex(grid, (hex) => {
-		const center = axialToPoint(hex.coords.axial, size, padding)
+		const center = axialToPoint(hex.axial, size, padding)
 		let corners = hexCorners(center, size)
 		corners = corners.map((corner) => {
 			return addPoints(corner, camera.center)
 		})
 		let color
-		if (selectedHex && areAxialsEqual(selectedHex.coords.axial, hex.coords.axial)) {
+		if (selectedHex && areAxialsEqual(selectedHex.axial, hex.axial)) {
 			color = 'blue'
-		} else if (currentHex && areAxialsEqual(currentHex.coords.axial, hex.coords.axial)) {
+		} else if (currentHex && areAxialsEqual(currentHex.axial, hex.axial)) {
 			color = 'red'
 		} else {
 			color = 'gray'
@@ -48,8 +48,8 @@ function draw() {
 	})
 
 	if (mode === 'path' && currentHex && selectedHex) {
-		const vertexA = Vertex(selectedHex.coords.cube, selectedVertex)
-		const vertexB = Vertex(currentHex.coords.cube, currentVertex)
+		const vertexA = Vertex(selectedHex.axial, selectedVertex)
+		const vertexB = Vertex(currentHex.axial, currentVertex)
 		const path = shortestPathFrom(grid, vertexA, vertexB)
 		path.forEach((vertex) => drawVertex(vertex))
 		drawPath(path)
@@ -120,8 +120,8 @@ canvas.addEventListener('click', (event) => {
 		selectedHex = newSelectedHex
 		selectedVertex = newSelectedVertex
 		if (mode === 'block' && selectedHex && currentHex) {
-			// blocks[vertexId(Vertex(selectedHex.coords.cube, selectedVertex))] = currentVertex
-			// blocks[vertexId(Vertex(selectedHex.coords.cube, selectedVertex))] = selectedVertex
+			// blocks[vertexId(Vertex(selectedHex.axial, selectedVertex))] = currentVertex
+			// blocks[vertexId(Vertex(selectedHex.axial, selectedVertex))] = selectedVertex
 		}
 		draw()
 	}
