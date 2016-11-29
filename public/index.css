@@ -1,8 +1,17 @@
 html, body {
 	margin: 0;
 	padding: 10px;
+	height: 100%;
+}
 
-	canvas {
-		border: 1px solid black;
-	}
+html {
+	overflow: hidden;
+}
+
+body {
+	overflow: auto;
+}
+
+#game {
+	border: 1px solid black;
 }

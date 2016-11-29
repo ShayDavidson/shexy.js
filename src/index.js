@@ -2,8 +2,9 @@ import { Point, axialToPoint, pointToAxial, hexCorners, addPoints, subtractPoint
 import { Grid, gridForEachHex, shortestPathFrom, hexAt } from 'lib/hex_grid'
 import { Vertex, areAxialsEqual } from 'lib/hex_coords'
 import { drawPolygon } from 'lib/canvas'
+import Stats from 'stats.js'
 
-const canvas = document.getElementById('canvas')
+const canvas = document.getElementById('game')
 const ctx = canvas.getContext('2d')
 
 const size = 22
@@ -115,14 +116,26 @@ canvas.addEventListener('click', (event) => {
 	const [point, vertex] = getAxialAtEvent(event)
 	const newSelectedHex = hexAt(grid, point)
 	const newSelectedVertex = vertex
-	if (mode === 'block') {
-
-	}
 	if (newSelectedHex !== selectedHex || newSelectedVertex !== selectedVertex) {
 		selectedHex = newSelectedHex
 		selectedVertex = newSelectedVertex
+		if (mode === 'block' && selectedHex && currentHex) {
+			// blocks[vertexId(Vertex(selectedHex.coords.cube, selectedVertex))] = currentVertex
+			// blocks[vertexId(Vertex(selectedHex.coords.cube, selectedVertex))] = selectedVertex
+		}
 		draw()
 	}
 })
 
 draw()
+
+const stats = new Stats()
+stats.showPanel(0)
+document.body.appendChild(stats.dom)
+function animateStats() {
+	stats.begin()
+	stats.end()
+	window.requestAnimationFrame(animateStats)
+}
+
+window.requestAnimationFrame(animateStats)
