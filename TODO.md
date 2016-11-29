@@ -1,5 +1,5 @@
 - Pool for coords
 - Order
 - Connected hexes
-- Define terimonology (e.g. Vertex i is a corner? )
-- Create stuff dynamicaly
+- Define terms (e.g. Vertex i is a corner? )
+- Create stuff dynamically
