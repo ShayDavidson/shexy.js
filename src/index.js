@@ -1,5 +1,5 @@
 import { Point, axialToPoint, pointToAxial, hexCorners, addPoints, subtractPoints, vertexToPoint, pointToCornerInAxial } from 'lib/hex_view'
-import { Grid, gridForEachHex, shortestPathFrom, hexAt, VertexMap, addBlocksBetweenAxials } from 'lib/hex_grid'
+import { Grid, gridForEachHex, shortestPathFrom, hexAt, VertexMap, addBlocksBetweenAxials, removeBlocksBetweenAxials, pathIsBlockedBetweenAxials } from 'lib/hex_grid'
 import { Vertex, areAxialsEqual, areAxialsNeighbors } from 'lib/hex_coords'
 import { drawPolygon } from 'lib/canvas'
 import Stats from 'stats.js'
@@ -120,9 +120,11 @@ canvas.addEventListener('click', (event) => {
 	if (newSelectedHex !== selectedHex || newSelectedVertex !== selectedVertex) {
 		if (mode === 'block' && selectedHex && currentHex) {
 			if (areAxialsNeighbors(selectedHex.axial, currentHex.axial)) {
-				addBlocksBetweenAxials(blocks, selectedHex.axial, currentHex.axial)
-				// blocks[vertexId(Vertex(selectedHex.axial, selectedVertex))] = currentVertex
-				// blocks[vertexId(Vertex(selectedHex.axial, selectedVertex))] = selectedVertex
+				if (pathIsBlockedBetweenAxials(blocks, selectedHex.axial, currentHex.axial)) {
+					removeBlocksBetweenAxials(blocks, selectedHex.axial, currentHex.axial)
+				} else {
+					addBlocksBetweenAxials(blocks, selectedHex.axial, currentHex.axial)
+				}
 			}
 		}
 		selectedHex = newSelectedHex
