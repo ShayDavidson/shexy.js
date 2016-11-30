@@ -7,11 +7,13 @@ import Stats from 'stats.js'
 const canvas = document.getElementById('game')
 const ctx = canvas.getContext('2d')
 
-const size = 22
 const range = 5
-const padding = 7
-const vertexWidth = 4
 const distanceLimit = 40
+
+let size = 22
+let padding = 7
+let vertexWidth = 4
+
 const camera = {
 	center: Point(canvas.width / 2, canvas.height / 2),
 	zoom: 1
