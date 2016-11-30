@@ -11,6 +11,7 @@ const size = 22
 const range = 5
 const padding = 7
 const vertexWidth = 4
+const distanceLimit = 40
 const camera = {
 	center: Point(canvas.width / 2, canvas.height / 2),
 	zoom: 1
@@ -60,7 +61,7 @@ function draw() {
 	if (mode === 'path' && currentHex && selectedHex) {
 		const vertexA = Vertex(selectedHex.axial, selectedVertex)
 		const vertexB = Vertex(currentHex.axial, currentVertex)
-		const path = shortestPathFrom(grid, blocks, vertexA, vertexB)
+		const path = shortestPathFrom(grid, blocks, vertexA, vertexB, distanceLimit)
 		path.forEach((vertex) => drawVertex(vertex))
 		drawPath(path)
 		drawVertex(vertexA, true)
