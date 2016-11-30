@@ -1,6 +1,6 @@
 import { Point, axialToPoint, pointToAxial, hexCorners, addPoints, subtractPoints, vertexToPoint, pointToCornerInAxial } from 'lib/hex_view'
-import { Grid, gridForEachHex, shortestPathFrom, hexAt } from 'lib/hex_grid'
-import { Vertex, areAxialsEqual } from 'lib/hex_coords'
+import { Grid, gridForEachHex, shortestPathFrom, hexAt, VertexMap, addBlocksBetweenAxials } from 'lib/hex_grid'
+import { Vertex, areAxialsEqual, areAxialsNeighbors } from 'lib/hex_coords'
 import { drawPolygon } from 'lib/canvas'
 import Stats from 'stats.js'
 
@@ -22,6 +22,7 @@ let currentHex
 let selectedVertex = 0
 let currentVertex = 0
 const grid = Grid(range)
+const blocks = new VertexMap()
 
 function draw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -50,7 +51,7 @@ function draw() {
 	if (mode === 'path' && currentHex && selectedHex) {
 		const vertexA = Vertex(selectedHex.axial, selectedVertex)
 		const vertexB = Vertex(currentHex.axial, currentVertex)
-		const path = shortestPathFrom(grid, vertexA, vertexB)
+		const path = shortestPathFrom(grid, blocks, vertexA, vertexB)
 		path.forEach((vertex) => drawVertex(vertex))
 		drawPath(path)
 		drawVertex(vertexA, true)
@@ -117,12 +118,15 @@ canvas.addEventListener('click', (event) => {
 	const newSelectedHex = hexAt(grid, point)
 	const newSelectedVertex = vertex
 	if (newSelectedHex !== selectedHex || newSelectedVertex !== selectedVertex) {
+		if (mode === 'block' && selectedHex && currentHex) {
+			if (areAxialsNeighbors(selectedHex.axial, currentHex.axial)) {
+				addBlocksBetweenAxials(blocks, selectedHex.axial, currentHex.axial)
+				// blocks[vertexId(Vertex(selectedHex.axial, selectedVertex))] = currentVertex
+				// blocks[vertexId(Vertex(selectedHex.axial, selectedVertex))] = selectedVertex
+			}
+		}
 		selectedHex = newSelectedHex
 		selectedVertex = newSelectedVertex
-		if (mode === 'block' && selectedHex && currentHex) {
-			// blocks[vertexId(Vertex(selectedHex.axial, selectedVertex))] = currentVertex
-			// blocks[vertexId(Vertex(selectedHex.axial, selectedVertex))] = selectedVertex
-		}
 		draw()
 	}
 })
