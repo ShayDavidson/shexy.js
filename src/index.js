@@ -121,8 +121,10 @@ canvas.addEventListener('click', (event) => {
 		if (mode === 'block' && selectedHex && currentHex) {
 			if (areAxialsNeighbors(selectedHex.axial, currentHex.axial)) {
 				if (pathIsBlockedBetweenAxials(blocks, selectedHex.axial, currentHex.axial)) {
+					console.log('remove')
 					removeBlocksBetweenAxials(blocks, selectedHex.axial, currentHex.axial)
 				} else {
+					console.log('add')
 					addBlocksBetweenAxials(blocks, selectedHex.axial, currentHex.axial)
 				}
 			}
