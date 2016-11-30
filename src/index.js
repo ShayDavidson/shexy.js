@@ -1,6 +1,6 @@
-import { Point, axialToPoint, pointToAxial, hexCorners, addPoints, subtractPoints, vertexToPoint, pointToCornerInAxial } from 'lib/hex_view'
+import { Point, axialToPoint, pointToAxial, hexCorners, addPoints, subtractPoints, vertexToPoint, pointToCornerInAxial, axialsToPathCorners } from 'lib/hex_view'
 import { Grid, gridForEachHex, shortestPathFrom, hexAt, addBlocksBetweenAxials, removeBlocksBetweenAxials, pathIsBlockedBetweenAxials } from 'lib/hex_grid'
-import { Vertex, areAxialsEqual, areAxialsNeighbors } from 'lib/hex_coords'
+import { Vertex, areAxialsEqual, areAxialsNeighbors, axialNeighbors } from 'lib/hex_coords'
 import { drawPolygon } from 'lib/canvas'
 import Stats from 'stats.js'
 
@@ -24,6 +24,7 @@ let currentVertex = 0
 const grid = Grid(range)
 const blocks = {}
 window.blocks = blocks
+
 function draw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height)
 	if (currentHex) {
@@ -46,6 +47,14 @@ function draw() {
 			color = 'gray'
 		}
 		drawPolygon(ctx, corners, {fillStyle: color})
+
+		axialNeighbors(hex.axial).forEach((neighbor) => {
+			if (pathIsBlockedBetweenAxials(blocks, neighbor, hex.axial)) {
+				let blockCorners = axialsToPathCorners(hex.axial, neighbor, size, padding)
+				blockCorners = blockCorners.map((corner) => addPoints(corner, camera.center))
+				drawPolygon(ctx, blockCorners, {fillStyle: 'gray'})
+			}
+		})
 	})
 
 	if (mode === 'path' && currentHex && selectedHex) {
@@ -121,10 +130,8 @@ canvas.addEventListener('click', (event) => {
 		if (mode === 'block' && selectedHex && currentHex) {
 			if (areAxialsNeighbors(selectedHex.axial, currentHex.axial)) {
 				if (pathIsBlockedBetweenAxials(blocks, selectedHex.axial, currentHex.axial)) {
-					console.log('remove')
 					removeBlocksBetweenAxials(blocks, selectedHex.axial, currentHex.axial)
 				} else {
-					console.log('add')
 					addBlocksBetweenAxials(blocks, selectedHex.axial, currentHex.axial)
 				}
 			}
