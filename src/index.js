@@ -22,8 +22,9 @@ let currentHex
 let selectedVertex = 0
 let currentVertex = 0
 const grid = Grid(range)
-const blocks = new VertexMap()
+const blocks = {}
 
+window.blocks = blocks
 function draw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height)
 	if (currentHex) {
