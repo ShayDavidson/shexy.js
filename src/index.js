@@ -1,6 +1,7 @@
 import { Point, axialToPoint, pointToAxial, hexCorners, addPoints, subtractPoints, vertexToPoint, pointToCornerInAxial, axialsToPathCorners } from 'lib/hex_view'
 import { Grid, gridForEachHex, shortestPathFrom, hexAt, addBlocksBetweenAxials, removeBlocksBetweenAxials, pathIsBlockedBetweenAxials } from 'lib/hex_grid'
-import { Vertex, areAxialsEqual, areAxialsNeighbors, axialNeighbors } from 'lib/hex_coords'
+import { areAxialsEqual, areAxialsNeighbors, axialNeighbors } from 'lib/hex_axial'
+import { Vertex } from 'lib/hex_vertex'
 import { drawPolygon } from 'lib/canvas'
 import Stats from 'stats.js'
 
