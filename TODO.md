@@ -1,9 +1,7 @@
-- Fix shortest path :D
-- Rename direction to edge.
 - Map all vertices and hexes in BFS?
 - Fill the gaps when blocking (how many vertices minimum in order to be blocked entirely)
 - Find a way to represent vertices in a unique way.
 - Pool for coords
-- Order and proper, unique terms (i,corner etc).
+- Order and proper, unique terms (i,corner, edge/direction etc).
 - Randomlly generated boards.
 - Dijkstra optimizations (change to A star? traverse in DFS with direction in mind?)
