@@ -33,7 +33,6 @@
     "webpack-validator": "2.2.7"
   },
   "dependencies": {
-    "lodash": "^4.17.2",
     "stats.js": "^0.17.0"
   }
 }
