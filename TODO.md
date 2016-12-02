@@ -1,3 +1,5 @@
+- Fix shortest path :D
+- Rename direction to edge.
 - Map all vertices and hexes in BFS?
 - Fill the gaps when blocking (how many vertices minimum in order to be blocked entirely)
 - Find a way to represent vertices in a unique way.
